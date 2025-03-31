@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "867485039922",
+    "project_id": "cardio-1b0ef",
+    "storage_bucket": "cardio-1b0ef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867485039922:android:cc933445affa904c3e6b2b",
+        "android_client_info": {
+          "package_name": "uz.udevs.medtime_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867485039922-b1ha1osv4o6c44vnhn8fj10mvp6cr32l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.udevs.medtime_mobile",
+            "certificate_hash": "727bd3c94fdca812be650a9ba70b6146e281f3ad"
+          }
+        },
+        {
+          "client_id": "867485039922-ecc89886be2kplrftlv6nenh4ismlp6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.udevs.medtime_mobile",
+            "certificate_hash": "2301c2eb271f4c9da136d9887d998b8e9fe1f93f"
+          }
+        },
+        {
+          "client_id": "867485039922-hqenbb2vjs57jnkpv1jul80pch1in9e4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.udevs.medtime_mobile",
+            "certificate_hash": "009c604feec1d18e7f17a9fc5b955fe9ea223a0f"
+          }
+        },
+        {
+          "client_id": "867485039922-il1nahl5sb2ie3s26g9bbse5i8td4ghg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.udevs.medtime_mobile",
+            "certificate_hash": "8c34ad0f50e986d109937abb52caa9b9f69134d0"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZhMMyMLzNjrZSoX_bXsiHQlClD7rVyHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
