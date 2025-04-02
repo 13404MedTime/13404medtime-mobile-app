@@ -8,6 +8,7 @@ import '../../injector_container.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
+import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
 import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
 import '../../presentation/bloc/main/profile/profile_bloc.dart';
@@ -15,14 +16,15 @@ import '../../presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart
 import '../../presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
 import '../../presentation/bloc/main/survey/survey_bloc.dart';
 import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
-import '../../presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import '../../presentation/bloc/splash/splash_bloc.dart';
-import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
+import '../../presentation/bloc/subscription/subscription_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
 import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
+import '../../presentation/pages/main/home/survey/photo_view/photo_view.dart';
+import '../../presentation/pages/main/home/survey/survey_page.dart';
 import '../../presentation/pages/main/main_page.dart';
 import '../../presentation/pages/main/profile/disease_history/args/disease_history_args.dart';
 import '../../presentation/pages/main/profile/disease_history/disease_history_page.dart';
@@ -65,6 +67,7 @@ sealed class AppRoutes {
         return FadePageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
+              BlocProvider(create: (_) => sl<HomeBloc>()),
               BlocProvider(create: (_) => sl<TreatmentsBloc>()),
               BlocProvider<ProfileBloc>(
                 create: (_) => sl<ProfileBloc>()..add(const GetUpcomingVisitsEventProfile()),
@@ -134,7 +137,18 @@ sealed class AppRoutes {
             ),
           ),
         );
+      case Routes.survey:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SurveyBloc>(),
+            child: const SurveyPage(),
+          ),
+        );
 
+      case Routes.photoView:
+        return MaterialPageRoute(
+          builder: (_) => PhotoViewPage(imageUrl: settings.arguments! as String),
+        );
       case Routes.upcomingVisits:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

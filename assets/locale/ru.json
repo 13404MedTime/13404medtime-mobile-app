@@ -331,5 +331,11 @@
   "patient_comments": "Комментарии пациента",
   "reject": "Отклонить",
   "accept": "Принять",
-  "comment_required": "Комментарий обязателен"
+  "comment_required": "Комментарий обязателен",
+  "rejected": "Отклонено",
+  "pending": "В ожидании",
+  "approved": "Подтверждено",
+  "are_you_sure_you_want_to_cancel": "Вы уверены, что хотите отменить?",
+  "do_you_want_accept": "Вы действительно хотите принять?",
+  "illness_name": "Название болезни"
 }

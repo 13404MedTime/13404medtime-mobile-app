@@ -43,7 +43,7 @@ dependencies:
   # open file
   open_filex: ^4.4.0
   # firebase
-  #  firebase_auth: ^4.17.3
+  firebase_auth: ^4.17.3
   firebase_core: ^2.25.4
   firebase_analytics: ^10.8.6
   firebase_messaging: ^14.7.16

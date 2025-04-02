@@ -15,7 +15,7 @@ class ViewRejectedRequest extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: context.theme.colorScheme.background,
           surfaceTintColor: context.theme.colorScheme.background,
-          title: const Text('Rejected Requests'),
+          title: Text(context.translate(bookingResponse.status.first)),
         ),
         body: Padding(
           padding: AppUtils.kPaddingAll16,
@@ -42,18 +42,29 @@ class ViewRejectedRequest extends StatelessWidget {
                 style: context.theme.textTheme.bodyMedium,
               ),
               AppUtils.kGap12,
-              Expanded(
-                child: Card(
-                  elevation: 0,
-                  child: Padding(
-                    padding: AppUtils.kPaddingAll16,
-                    child: Text(
-                      bookingResponse.patientDescription.substring(3, bookingResponse.patientDescription.length - 4),
-                      style: context.theme.textTheme.bodyMedium,
-                    ),
+              Card(
+                elevation: 0,
+                child: Padding(
+                  padding: AppUtils.kPaddingAll16,
+                  child: Text(
+                    bookingResponse.patientDescription.substring(3, bookingResponse.patientDescription.length - 4),
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ),
+              AppUtils.kGap12,
+              bookingResponse.doctorDescription.replaceAll('<p>', '').replaceAll('</p>', '').isEmpty
+                  ? const SizedBox()
+                  : Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: AppUtils.kPaddingAll16,
+                        child: Text(
+                          bookingResponse.doctorDescription.replaceAll('<p>', '').replaceAll('</p>', ''),
+                          style: context.theme.textTheme.bodyMedium,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

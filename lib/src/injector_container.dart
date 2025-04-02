@@ -18,16 +18,17 @@ import 'core/utils/health_service.dart';
 import 'data/source/local_source.dart';
 import 'domain/network/api_client.dart';
 import 'domain/repositories/auth/auth_repository.dart';
+import 'domain/repositories/home/home_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
 import 'domain/repositories/register/register_repository.dart';
 import 'domain/repositories/register/register_repository_impl.dart';
-import 'domain/repositories/search/search_repository.dart';
 import 'domain/repositories/splash/splash_repository.dart';
 import 'domain/repositories/survey/survey_repository.dart';
 import 'domain/repositories/treatments/treatments_repository.dart';
 import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import 'presentation/bloc/auth/register/register_bloc.dart';
+import 'presentation/bloc/main/home/home_bloc.dart';
 import 'presentation/bloc/main/main_bloc.dart';
 import 'presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
 import 'presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
@@ -36,9 +37,8 @@ import 'presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
 import 'presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
 import 'presentation/bloc/main/survey/survey_bloc.dart';
 import 'presentation/bloc/main/treatments/treatments_bloc.dart';
-import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
-import 'presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
+import 'presentation/bloc/subscription/subscription_bloc.dart';
 
 final sl = GetIt.instance;
 late Box<dynamic> _box;
@@ -133,14 +133,11 @@ Future<void> init() async {
 
   registerFeature(authClient, baseClient);
 
-
   homeFeature(baseClient);
-
 
   profileFeature(baseClient, baseClient);
 
   surveyFeature(baseClient);
-
 
   treatmentsFeature(baseClient);
 }
@@ -161,15 +158,13 @@ void mainFeature(ApiClient baseClient) {
 
 void homeFeature(ApiClient authClient) {
   sl
-    ..registerLazySingleton<SearchRepository>(
-      () => SearchRepositoryImpl(
+    ..registerFactory<HomeBloc>(() => HomeBloc(sl()))
+    ..registerLazySingleton<HomeRepository>(
+      () => HomeRepositoryImpl(
         apiClient: authClient,
         networkInfo: sl(),
-        dio: sl(),
       ),
     )
-    ..registerFactory<ShowAllMyVisitsBloc>(() => ShowAllMyVisitsBloc(sl()))
-    ..registerFactory<SubPurposeBloc>(() => SubPurposeBloc(sl()))
     ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()));
 }
 
@@ -194,7 +189,6 @@ void surveyFeature(ApiClient authClient) {
       ),
     );
 }
-
 
 void registerFeature(ApiClient authClient, ApiClient baseClient) {
   sl

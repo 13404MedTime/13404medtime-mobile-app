@@ -336,5 +336,11 @@
   "patient_comments": "Bemor fikrlari",
   "reject": "Rad etish",
   "accept": "Qabul qilish",
-  "comment_required": "Fikr qoldirish majburiy"
+  "comment_required": "Fikr qoldirish majburiy",
+  "rejected": "Rad etildi",
+  "pending": "Kutilmoqda",
+  "approved": "Tasdiqlangan",
+  "are_you_sure_you_want_to_cancel": "Rostan ham bekor qilishni xohlaysizmi?",
+  "do_you_want_accept": "Rostan ham qabul qilishni xohlaysizmi?",
+  "illness_name": "Kasallik nomi"
 }

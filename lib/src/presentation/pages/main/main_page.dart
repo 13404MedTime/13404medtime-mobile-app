@@ -7,9 +7,11 @@ import '../../../core/constants/constants.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/base_functions.dart';
+import '../../bloc/main/home/home_bloc.dart';
 import '../../bloc/main/main_bloc.dart';
 import '../../bloc/main/profile/profile_bloc.dart';
 import '../../bloc/main/treatments/treatments_bloc.dart';
+import 'home/home_page.dart';
 import 'profile/profile_page.dart';
 import 'treatments/treatments_page.dart';
 
@@ -38,7 +40,7 @@ class _MainPageState extends State<MainPage> with MainMixin {
             body: IndexedStack(
               index: state.bottomMenu.index,
               children: const [
-                SizedBox(),
+                HomePage(),
                 SizedBox(),
                 SizedBox(),
                 TreatmentsPage(),
@@ -52,6 +54,17 @@ class _MainPageState extends State<MainPage> with MainMixin {
                 String tag = FirebaseAnalyticsEvents.mainViewNavigationBtn;
                 switch (i) {
                   case 0:
+                    context.read<HomeBloc>()
+                      ..add(const HomeEventInitial())
+                      ..add(const GetFavouriteDoctorsEvent())
+                      ..add(const GetAppointmentsEvent())
+                      ..add(const GetAppointmentsForSaveEvent())
+                      ..add(const GetVisitsEvent())
+                      ..add(const GetMedicalHistoryEvent())
+                      ..add(const GetAnalysisSurveyHomeEvent())
+                      ..add(const GetUnreadNotificationsCount())
+                      ..add(const GetAverageDistanceHeartEvent())
+                      ..add(const GetBestDistanceAndTimeEvent());
                     tag = FirebaseAnalyticsEvents.mainViewNavigationBtn;
                   case 1:
                     tag = FirebaseAnalyticsEvents.consultationNavigationBtn;
@@ -61,6 +74,7 @@ class _MainPageState extends State<MainPage> with MainMixin {
                     context.read<TreatmentsBloc>().add(const GetMedicineTakingMenuEvent());
                     tag = FirebaseAnalyticsEvents.profileNavigationBtn;
                   case 4:
+                    context.read<HomeBloc>().add(const HomeEventInitial());
                     context.read<ProfileBloc>().add(const GetUpcomingVisitsEventProfile());
                   default:
                     tag = FirebaseAnalyticsEvents.mainViewNavigationBtn;

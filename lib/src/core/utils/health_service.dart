@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -21,6 +20,9 @@ class HealthServiceImpl implements HealthService {
 
   @override
   Future<bool> authorize() async {
+    await health.installHealthConnect();
+    await health.configure();
+    await health.getHealthConnectSdkStatus();
     if (kDebugMode) {
       print('Starting authorization process...');
     }
@@ -34,7 +36,6 @@ class HealthServiceImpl implements HealthService {
         print('Activity recognition permission status: $status');
       }
     }
-
     bool authorized = false;
     try {
       if (kDebugMode) {

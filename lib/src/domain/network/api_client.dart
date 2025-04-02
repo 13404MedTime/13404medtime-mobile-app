@@ -76,13 +76,11 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
-
   // @POST('v1/object/get-list/naznachenie')
   // Future<GetMedicalHistoryResponse> getMedicalHistory(
   //   @Body() GetMedicalHistoryRequest request,
   //   @Query('project-id') String projectId,
   // );
-
 
 
   @GET('v2/object-slim/get-list/selected_doctors')
@@ -96,7 +94,6 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> request,
   );
 
-
   @POST('v1/object/get-list/client_files')
   Future<AnalysisSurveyResponse> getAnalysisSurvey(
     @Body() AnalysisSurveyRequest request,
@@ -106,7 +103,6 @@ abstract class ApiClient {
   Future<UploadFileImageResponse> uploadFileImage(
     @Body() UploadFileImageRequest request,
   );
-
   @GET('v2/object-slim/get-list/selected_doctors')
   Future<FavouriteDoctorResponse> getFavouriteDoctor(
     @Query('data') String request,
@@ -118,7 +114,6 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
   );
-
 
   // update user token and platformType
   @PUT('v1/object/cleints')
@@ -134,13 +129,11 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
-
   @POST('v1/invoke_function/cardioapp-update-many-notification')
   Future<dynamic> readNotifications(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
   );
-
 
   @GET('v2/object-slim/get-list/medicine_taking')
   Future<MedicineTakingResponse> getMedicineTaking(
@@ -162,7 +155,6 @@ abstract class ApiClient {
     @Path('medicine_id') String medicineId,
     @Query('project-id') String projectId,
   );
-
 
   /// Delete doctor free time
   @DELETE('/v2/items/doctor_booking/{timeId}')
@@ -186,7 +178,6 @@ abstract class ApiClient {
     @Header('Authorization') String token,
   );
 
-
   /// Update Doctor Request
   @PUT('/v2/items/doctor_booking_request')
   Future<void> updateDoctorRequest(
@@ -201,5 +192,4 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
     @Header('Authorization') String token,
   );
-
 }

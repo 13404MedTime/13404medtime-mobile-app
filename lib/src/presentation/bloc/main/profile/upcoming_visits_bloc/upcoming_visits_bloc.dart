@@ -52,7 +52,7 @@ class UpcomingVisitsBloc extends Bloc<UpcomingVisitsEvent, UpcomingVisitsState> 
     for (final i in result.right.data.data.response) {
       final date = DateTime.parse(i.doctorBookingIdData.date);
       final key = DateFormat('dd MMMM yyyy').format(date);
-      if (i.status != ['approved'] && DateTime.parse(i.doctorBookingIdData.date).isAfter(DateTime.now())) {
+      if (i.status.first.toLowerCase() != 'approved' && DateTime.parse(i.doctorBookingIdData.date).isAfter(DateTime.now())) {
         if (map.containsKey(key)) {
           final list = [...map[key]!, i]
             ..sort((a, b) => a.doctorBookingIdData.fromTime.compareTo(b.doctorBookingIdData.fromTime));

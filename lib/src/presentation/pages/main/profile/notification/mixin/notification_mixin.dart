@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/profile/notification/notification_page.dart';
+part of '../notification_page.dart';
 
 mixin NotificationMixin on State<NotificationPage> {
   // late final HomeBloc _homeBloc;

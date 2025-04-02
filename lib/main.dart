@@ -13,6 +13,7 @@ import 'src/core/l10n/app_localizations.dart';
 import 'src/core/services/notification_service.dart';
 import 'src/injector_container.dart';
 import 'src/presentation/bloc/log_bloc_observer.dart';
+import 'src/presentation/bloc/main/home/home_bloc.dart';
 import 'src/presentation/bloc/main/main_bloc.dart';
 import 'src/presentation/bloc/main/profile/profile_bloc.dart';
 import 'src/presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
@@ -70,6 +71,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
+          BlocProvider<HomeBloc>(create: (_) => sl<HomeBloc>()),
           BlocProvider<MainBloc>(create: (_) => sl<MainBloc>()),
           BlocProvider<ProfileBloc>(create: (_) => sl<ProfileBloc>()),
           BlocProvider<ProfileEditBloc>(create: (_) => sl<ProfileEditBloc>()),
