@@ -22,6 +22,7 @@ import 'domain/repositories/home/home_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
 import 'domain/repositories/register/register_repository.dart';
 import 'domain/repositories/register/register_repository_impl.dart';
+import 'domain/repositories/search/search_repository.dart';
 import 'domain/repositories/splash/splash_repository.dart';
 import 'domain/repositories/survey/survey_repository.dart';
 import 'domain/repositories/treatments/treatments_repository.dart';
@@ -37,6 +38,7 @@ import 'presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
 import 'presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
 import 'presentation/bloc/main/survey/survey_bloc.dart';
 import 'presentation/bloc/main/treatments/treatments_bloc.dart';
+import 'presentation/bloc/my_visit/my_visit_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
 import 'presentation/bloc/subscription/subscription_bloc.dart';
 
@@ -165,6 +167,15 @@ void homeFeature(ApiClient authClient) {
         networkInfo: sl(),
       ),
     )
+    ..registerLazySingleton<SearchRepository>(
+      () => SearchRepositoryImpl(
+        apiClient: authClient,
+        networkInfo: sl(),
+        dio: sl(),
+      ),
+    )
+    ..registerFactory<MyVisitBloc>(() => MyVisitBloc(sl()))
+    ..registerFactory<SubscriptionBloc>(() => SubscriptionBloc(sl()))
     ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()));
 }
 
@@ -189,6 +200,7 @@ void surveyFeature(ApiClient authClient) {
       ),
     );
 }
+
 
 void registerFeature(ApiClient authClient, ApiClient baseClient) {
   sl

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/home/get_visits/doctor_booking_request_response.dart';
 import '../../data/source/local_source.dart';
 import '../../injector_container.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
@@ -16,6 +17,7 @@ import '../../presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart
 import '../../presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
 import '../../presentation/bloc/main/survey/survey_bloc.dart';
 import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
+import '../../presentation/bloc/my_visit/my_visit_bloc.dart';
 import '../../presentation/bloc/splash/splash_bloc.dart';
 import '../../presentation/bloc/subscription/subscription_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
@@ -23,6 +25,15 @@ import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
 import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
+import '../../presentation/pages/main/home/my_visit/my_visit_page.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/args/medication_description_args.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/args/medication_files_args.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/args/purpose_page_args.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/args/sub_purpose_page_args.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/purpose_page.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/sub_purpose/medication_description/medication_description_page.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/sub_purpose/medication_files/medication_files_page.dart';
+import '../../presentation/pages/main/home/my_visit/purpose/sub_purpose/sub_purpose_page.dart';
 import '../../presentation/pages/main/home/survey/photo_view/photo_view.dart';
 import '../../presentation/pages/main/home/survey/survey_page.dart';
 import '../../presentation/pages/main/main_page.dart';
@@ -137,6 +148,21 @@ sealed class AppRoutes {
             ),
           ),
         );
+      case Routes.myVisit:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<MyVisitBloc>()
+              ..add(
+                GetDoctorFreeTimeEvent(
+                    guid:
+                        settings.arguments != null ? (settings.arguments! as MyVisitArgument).doctor?.guid ?? '' : ''),
+              )
+              ..add(const GetDoctorBookingRequestsEvent()),
+            child: MyVisitPage(
+              arguments: settings.arguments is MyVisitArgument ? settings.arguments! as MyVisitArgument : null,
+            ),
+          ),
+        );
       case Routes.survey:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -149,6 +175,20 @@ sealed class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => PhotoViewPage(imageUrl: settings.arguments! as String),
         );
+      case Routes.medicationDescription:
+        return MaterialPageRoute(
+          builder: (_) => MedicationDescriptionPage(
+            args: settings.arguments is MedicationDescriptionArgs
+                ? settings.arguments! as MedicationDescriptionArgs
+                : null,
+          ),
+        );
+      case Routes.medicationFiles:
+        return MaterialPageRoute(
+          builder: (_) => MedicationFilesPage(
+            args: settings.arguments is MedicationFilesArgs ? settings.arguments! as MedicationFilesArgs : null,
+          ),
+        );
       case Routes.upcomingVisits:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -157,6 +197,12 @@ sealed class AppRoutes {
                 const GetDoctorRequests$UpcomingVisitsEvent(),
               ),
             child: const UpcomingVisitsPage(),
+          ),
+        );
+      case Routes.viewRejectedRequest:
+        return MaterialPageRoute(
+          builder: (_) => ViewRejectedRequest(
+            bookingResponse: settings.arguments! as BookingResponse,
           ),
         );
       default:
