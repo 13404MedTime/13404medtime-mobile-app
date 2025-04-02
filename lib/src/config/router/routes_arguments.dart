@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import '../../data/models/home/get_visits/get_visits_response.dart';
-import '../../data/models/my_appointments/my_appointments_response.dart';
 import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
 
 class HomePageArgument {

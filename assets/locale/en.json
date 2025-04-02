@@ -335,5 +335,6 @@
     "appointment_deatils": "Appointment Details",
     "patient_comments": "Patient Comments",
     "reject": "Reject",
-    "accept": "Accept"
+    "accept": "Accept",
+    "comment_required": "Comment is required"
 }

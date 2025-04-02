@@ -335,5 +335,6 @@
   "appointment_details": "Konsultatsiya ma'lumotlari",
   "patient_comments": "Bemor fikrlari",
   "reject": "Rad etish",
-  "accept": "Qabul qilish"
+  "accept": "Qabul qilish",
+  "comment_required": "Fikr qoldirish majburiy"
 }

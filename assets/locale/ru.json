@@ -330,5 +330,6 @@
   "appointment_details": "Детали визита",
   "patient_comments": "Комментарии пациента",
   "reject": "Отклонить",
-  "accept": "Принять"
+  "accept": "Принять",
+  "comment_required": "Комментарий обязателен"
 }

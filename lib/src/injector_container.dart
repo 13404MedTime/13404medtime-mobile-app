@@ -21,9 +21,10 @@ import 'domain/repositories/auth/auth_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
 import 'domain/repositories/register/register_repository.dart';
 import 'domain/repositories/register/register_repository_impl.dart';
+import 'domain/repositories/search/search_repository.dart';
 import 'domain/repositories/splash/splash_repository.dart';
+import 'domain/repositories/survey/survey_repository.dart';
 import 'domain/repositories/treatments/treatments_repository.dart';
-import 'presentation/bloc/add_medicine/add_medicine_bloc.dart';
 import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import 'presentation/bloc/auth/register/register_bloc.dart';
@@ -32,9 +33,12 @@ import 'presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc
 import 'presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
 import 'presentation/bloc/main/profile/profile_bloc.dart';
 import 'presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
+import 'presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
+import 'presentation/bloc/main/survey/survey_bloc.dart';
 import 'presentation/bloc/main/treatments/treatments_bloc.dart';
-import 'presentation/bloc/my_appointments/my_appointments_bloc.dart';
+import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
+import 'presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 
 final sl = GetIt.instance;
 late Box<dynamic> _box;
@@ -129,10 +133,14 @@ Future<void> init() async {
 
   registerFeature(authClient, baseClient);
 
+
   homeFeature(baseClient);
 
 
   profileFeature(baseClient, baseClient);
+
+  surveyFeature(baseClient);
+
 
   treatmentsFeature(baseClient);
 }
@@ -153,9 +161,16 @@ void mainFeature(ApiClient baseClient) {
 
 void homeFeature(ApiClient authClient) {
   sl
-    ..registerFactory<MyAppointmentsBloc>(() => MyAppointmentsBloc(sl()))
-    ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()))
-    ..registerFactory<AddMedicineBloc>(() => AddMedicineBloc(sl()));
+    ..registerLazySingleton<SearchRepository>(
+      () => SearchRepositoryImpl(
+        apiClient: authClient,
+        networkInfo: sl(),
+        dio: sl(),
+      ),
+    )
+    ..registerFactory<ShowAllMyVisitsBloc>(() => ShowAllMyVisitsBloc(sl()))
+    ..registerFactory<SubPurposeBloc>(() => SubPurposeBloc(sl()))
+    ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()));
 }
 
 void treatmentsFeature(ApiClient authClient) {
@@ -163,6 +178,17 @@ void treatmentsFeature(ApiClient authClient) {
     ..registerFactory<TreatmentsBloc>(() => TreatmentsBloc(sl()))
     ..registerLazySingleton<TreatmentsRepository>(
       () => TreatmentsRepositoryImpl(
+        apiClient: authClient,
+        networkInfo: sl(),
+      ),
+    );
+}
+
+void surveyFeature(ApiClient authClient) {
+  sl
+    ..registerFactory<SurveyBloc>(() => SurveyBloc(surveyRepository: sl()))
+    ..registerLazySingleton<SurveyRepository>(
+      () => SurveyRepositoryImpl(
         apiClient: authClient,
         networkInfo: sl(),
       ),
@@ -212,7 +238,6 @@ void profileFeature(ApiClient client, ApiClient baseClient) {
       ),
     );
 }
-
 
 Future<void> initHive() async {
   const boxName = 'bloc_mobile_box';

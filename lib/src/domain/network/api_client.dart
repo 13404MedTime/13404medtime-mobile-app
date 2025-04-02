@@ -10,7 +10,12 @@ import '../../data/models/auth/verify_request.dart';
 import '../../data/models/profile/get_favourite_doctor/favourite_doctor_response.dart';
 import '../../data/models/profile/profile_edit_request.dart';
 import '../../data/models/profile/profile_response.dart';
+import '../../data/models/search_model/search_appointments_response.dart';
 import '../../data/models/splash/check_for_production_response.dart';
+import '../../data/models/survey/get_analysis_survey/analysis_survey_request.dart';
+import '../../data/models/survey/get_analysis_survey/analysis_survey_response.dart';
+import '../../data/models/survey/uploade_file_image/upload_file_image_request.dart';
+import '../../data/models/survey/uploade_file_image/upload_file_image_response.dart';
 import '../../data/models/treatments/medicine_taking/medicine_taking_response.dart';
 import '../../presentation/additional_mixins/remote_like_mixin.dart';
 
@@ -78,7 +83,7 @@ abstract class ApiClient {
   //   @Query('project-id') String projectId,
   // );
 
-  
+
 
   @GET('v2/object-slim/get-list/selected_doctors')
   Future<FavouriteDoctorsResponse> getFavouriteDoctors(
@@ -89,6 +94,29 @@ abstract class ApiClient {
   @POST('v1/object-upsert/selected_doctors')
   Future<IsFavouriteDoctorResponse> likeDoctor(
     @Body() Map<String, dynamic> request,
+  );
+
+
+  @POST('v1/object/get-list/client_files')
+  Future<AnalysisSurveyResponse> getAnalysisSurvey(
+    @Body() AnalysisSurveyRequest request,
+  );
+
+  @POST('v1/object/client_files')
+  Future<UploadFileImageResponse> uploadFileImage(
+    @Body() UploadFileImageRequest request,
+  );
+
+  @GET('v2/object-slim/get-list/selected_doctors')
+  Future<FavouriteDoctorResponse> getFavouriteDoctor(
+    @Query('data') String request,
+  );
+
+  /// search
+  @POST('v1/object/get-list/naznachenie')
+  Future<SearchAppointmentsResponse> getSearchedAppointments(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
   );
 
 
@@ -107,17 +135,12 @@ abstract class ApiClient {
   );
 
 
-  // @POST(
-  //     '/v1/invoke_function/madadio-stepbystep-a4dc1f1c-d20f-4c1a-abf5-b819076604bc')
-  // Future<SendStepsCountResponse> sendStepsCount(
-  //   @Body() Map<String, dynamic> request,
-  // );
-
   @POST('v1/invoke_function/cardioapp-update-many-notification')
   Future<dynamic> readNotifications(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
   );
+
 
   @GET('v2/object-slim/get-list/medicine_taking')
   Future<MedicineTakingResponse> getMedicineTaking(
@@ -171,7 +194,6 @@ abstract class ApiClient {
     @Header('Authorization') String token,
   );
 
-
   /// Send Full Advice
   @POST('/v1/object/medicine_taking')
   Future<void> sendFullAdvice(
@@ -179,6 +201,5 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
     @Header('Authorization') String token,
   );
-
 
 }

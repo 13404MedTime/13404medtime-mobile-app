@@ -3,12 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/doctor/doctor_main/doctor_home/doctor_patient_response.dart';
-import '../../data/models/home/get_visits/doctor_booking_request_response.dart';
-import '../../data/models/my_appointments/switch_response.dart';
 import '../../data/source/local_source.dart';
 import '../../injector_container.dart';
-import '../../presentation/bloc/add_medicine/add_medicine_bloc.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
@@ -17,9 +13,11 @@ import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_b
 import '../../presentation/bloc/main/profile/profile_bloc.dart';
 import '../../presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
 import '../../presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
+import '../../presentation/bloc/main/survey/survey_bloc.dart';
 import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
-import '../../presentation/bloc/my_appointments/my_appointments_bloc.dart';
+import '../../presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import '../../presentation/bloc/splash/splash_bloc.dart';
+import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
@@ -136,13 +134,7 @@ sealed class AppRoutes {
             ),
           ),
         );
-      case Routes.addMedicine:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<AddMedicineBloc>(),
-            child: const AddMedicinePage(),
-          ),
-        );
+
       case Routes.upcomingVisits:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -151,12 +143,6 @@ sealed class AppRoutes {
                 const GetDoctorRequests$UpcomingVisitsEvent(),
               ),
             child: const UpcomingVisitsPage(),
-          ),
-        );
-      case Routes.viewRejectedRequest:
-        return MaterialPageRoute(
-          builder: (_) => ViewRejectedRequest(
-            bookingResponse: settings.arguments! as BookingResponse,
           ),
         );
       default:
