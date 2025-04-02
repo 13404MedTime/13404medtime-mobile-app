@@ -186,3 +186,16 @@ extension ParseExtension on String {
   String get htmlToText => Bidi.stripHtmlIfNeeded(this);
 }
 
+extension MetricModelExtension on MetricModel {
+  String getName(num number) =>
+      (localSource.locale == 'uz'
+          ? unitOfMeasureUz
+          : localSource.locale == 'ru'
+              ? number.russianTextByNumber(
+                  unitOfMeasureRu1 ?? '',
+                  unitOfMeasureRu3 ?? '',
+                  unitOfMeasureRu2 ?? '',
+                )
+              : unitOfMeasureEng) ??
+      '';
+}

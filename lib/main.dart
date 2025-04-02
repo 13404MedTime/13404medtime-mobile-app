@@ -12,6 +12,10 @@ import 'src/core/extension/extension.dart';
 import 'src/core/l10n/app_localizations.dart';
 import 'src/core/services/notification_service.dart';
 import 'src/injector_container.dart';
+import 'src/presentation/bloc/log_bloc_observer.dart';
+import 'src/presentation/bloc/main/main_bloc.dart';
+import 'src/presentation/bloc/main/profile/profile_bloc.dart';
+import 'src/presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
 import 'src/presentation/components/native_splash/flutter_native_splash.dart';
 
 void main() async {
@@ -20,6 +24,11 @@ void main() async {
 
   /// firebase crashlytics
   await notificationServiceInitialize();
+
+  /// bloc logger
+  if (kDebugMode) {
+    Bloc.observer = LogBlocObserver();
+  }
 
   await init();
   await sl.allReady();
@@ -59,27 +68,35 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    /// title
-    title: 'MedTime',
-    debugShowCheckedModeBanner: false,
-    navigatorKey: rootNavigatorKey,
-    scaffoldMessengerKey: scaffoldMessengerKey,
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider<MainBloc>(create: (_) => sl<MainBloc>()),
+          BlocProvider<ProfileBloc>(create: (_) => sl<ProfileBloc>()),
+          BlocProvider<ProfileEditBloc>(create: (_) => sl<ProfileEditBloc>()),
+        ],
+        child: MaterialApp(
+          /// title
+          title: 'MedTime',
+          debugShowCheckedModeBanner: false,
+          navigatorKey: rootNavigatorKey,
+          scaffoldMessengerKey: scaffoldMessengerKey,
 
-    /// theme style
-    theme: lightTheme,
-    darkTheme: darkTheme,
-    themeMode: context.options.themeMode,
+          /// theme style
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: context.options.themeMode,
 
-    /// lang
-    locale: context.options.locale,
-    supportedLocales: AppLocalizations.supportedLocales,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
+          /// lang
+          locale: context.options.locale,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
 
-    /// pages
-    initialRoute: Routes.initial,
-    onGenerateRoute: AppRoutes.onGenerateRoute,
-  );
+          /// pages
+          initialRoute: Routes.initial,
+          onUnknownRoute: AppRoutes.onUnknownRoute,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+        ),
+      );
 }
 
 class _HttpOverrides extends HttpOverrides {

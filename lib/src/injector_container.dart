@@ -17,8 +17,25 @@ import 'core/constants/constants.dart';
 import 'core/utils/health_service.dart';
 import 'data/source/local_source.dart';
 import 'domain/network/api_client.dart';
+import 'domain/repositories/auth/auth_repository.dart';
+import 'domain/repositories/profile/profile_repository.dart';
+import 'domain/repositories/register/register_repository.dart';
+import 'domain/repositories/register/register_repository_impl.dart';
 import 'domain/repositories/splash/splash_repository.dart';
+import 'domain/repositories/treatments/treatments_repository.dart';
+import 'presentation/bloc/add_medicine/add_medicine_bloc.dart';
+import 'presentation/bloc/auth/auth_bloc.dart';
+import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
+import 'presentation/bloc/auth/register/register_bloc.dart';
+import 'presentation/bloc/main/main_bloc.dart';
+import 'presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
+import 'presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
+import 'presentation/bloc/main/profile/profile_bloc.dart';
+import 'presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart';
+import 'presentation/bloc/main/treatments/treatments_bloc.dart';
+import 'presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
+
 final sl = GetIt.instance;
 late Box<dynamic> _box;
 
@@ -108,17 +125,90 @@ Future<void> init() async {
   /// main
   mainFeature(baseClient);
 
+  authFeature(authClient, baseClient);
+
+  registerFeature(authClient, baseClient);
+
+  homeFeature(baseClient);
+
+
+  profileFeature(baseClient, baseClient);
+
+  treatmentsFeature(baseClient);
 }
 
 void mainFeature(ApiClient baseClient) {
   /// splash
   sl
     ..registerFactory<SplashBloc>(() => SplashBloc(sl()))
+    ..registerLazySingleton(MainBloc.new)
     ..registerLazySingleton<SplashRepository>(
       () => SplashRepositoryImpl(
         apiClient: baseClient,
         networkInfo: sl(),
         dio: sl(),
+      ),
+    );
+}
+
+void homeFeature(ApiClient authClient) {
+  sl
+    ..registerFactory<MyAppointmentsBloc>(() => MyAppointmentsBloc(sl()))
+    ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()))
+    ..registerFactory<AddMedicineBloc>(() => AddMedicineBloc(sl()));
+}
+
+void treatmentsFeature(ApiClient authClient) {
+  sl
+    ..registerFactory<TreatmentsBloc>(() => TreatmentsBloc(sl()))
+    ..registerLazySingleton<TreatmentsRepository>(
+      () => TreatmentsRepositoryImpl(
+        apiClient: authClient,
+        networkInfo: sl(),
+      ),
+    );
+}
+
+
+void registerFeature(ApiClient authClient, ApiClient baseClient) {
+  sl
+    ..registerFactory<RegisterBloc>(
+      () => RegisterBloc(
+        registerUserRepository: sl(),
+      ),
+    )
+    ..registerLazySingleton<RegisterUserRepository>(
+      () => RegisterUserRepositoryImpl(
+        apiClient: authClient,
+        baseClient: baseClient,
+        networkInfo: sl(),
+      ),
+    );
+}
+
+void authFeature(ApiClient authClient, ApiClient baseClient) {
+  sl
+    ..registerFactory<AuthBloc>(() => AuthBloc(sl()))
+    ..registerFactory<ConfirmCodeBloc>(() => ConfirmCodeBloc(sl()))
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(
+        apiClient: authClient,
+        baseClient: baseClient,
+        networkInfo: sl(),
+      ),
+    );
+}
+
+void profileFeature(ApiClient client, ApiClient baseClient) {
+  sl
+    ..registerFactory<ProfileEditBloc>(() => ProfileEditBloc(sl()))
+    ..registerFactory<ProfileBloc>(() => ProfileBloc(sl()))
+    ..registerFactory<FavouriteDoctorBloc>(() => FavouriteDoctorBloc(sl()))
+    ..registerLazySingleton<ProfileRepository>(
+      () => ProfileRepositoryImpl(
+        apiClient: client,
+        baseClient: baseClient,
+        networkInfo: sl(),
       ),
     );
 }

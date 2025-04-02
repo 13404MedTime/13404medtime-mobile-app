@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../config/router/routes_arguments.dart';
 import '../../../core/extension/extension.dart';
 import '../custom_texfield/custom_text_field.dart';
 import '../loading_widgets/modal_progress_hud.dart';
@@ -238,7 +239,14 @@ class _ChooseFileButtonWidgetState extends State<ChooseFileButtonWidget> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-
+                      if (file != null && _fileName.text.trim().isNotEmpty) {
+                        Navigator.pop(
+                            context,
+                            SurveyPageUploadFileArgument(
+                              selectedFileName: _fileName.text.trim(),
+                              file: file ?? File(''),
+                            ));
+                      }
                     },
                     child: Text(
                       context.translate('save'),
