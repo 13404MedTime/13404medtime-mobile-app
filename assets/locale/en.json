@@ -343,5 +343,6 @@
   "approved": "Approved",
   "are_you_sure_you_want_to_cancel": "Are you sure you want to cancel?",
   "do_you_want_accept": "Do you really want to accept?",
-  "illness_name": "Illness name"
+  "illness_name": "Illness name",
+  "you_cant_remove_free_time": "You can't remove free time"
 }

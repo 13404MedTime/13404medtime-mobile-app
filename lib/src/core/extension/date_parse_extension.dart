@@ -112,6 +112,12 @@ extension ParseExtension on String {
     return DateFormat('dd.MM.yyyy', localSource.locale).format(date);
   }
 
+  String get yyyyMMdd {
+    if (isEmpty) return '';
+    final DateTime date = DateFormat('yyyy-MM-ddTHH:mm:ssZ').parse(this);
+    return DateFormat('yyyy.MM.dd', localSource.locale).format(date);
+  }
+
   DateTime get notificationDateTime {
     if (isEmpty) return DateTime.now();
     final hour = split(':')[0];

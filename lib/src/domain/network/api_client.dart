@@ -272,7 +272,6 @@ abstract class ApiClient {
     @Header('Authorization') String token,
   );
 
-  /// Doctor Requests ///
 
   /// Delete doctor free time
   @DELETE('/v2/items/doctor_booking/{timeId}')

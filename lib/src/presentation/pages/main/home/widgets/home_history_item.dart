@@ -36,22 +36,11 @@ class HomeHistoryItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      data.illIdData?.illnessName ?? '',
+                      names.isNotEmpty ? names.join(', ') : context.translate('no_drugs'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: context.theme.colorScheme.error,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    AppUtils.kBoxHeight2,
-                    Text(
-                      names.isNotEmpty ? names.join(', ') : context.translate('no_drugs'),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: context.theme.colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

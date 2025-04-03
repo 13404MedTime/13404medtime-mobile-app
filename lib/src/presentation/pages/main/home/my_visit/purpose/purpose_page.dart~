@@ -1,0 +1,121 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+
+import '../../../../../../config/router/app_routes.dart';
+import '../../../../../../core/extension/extension.dart';
+import '../../../../../../data/models/purpose/medication_times.dart';
+import '../../../../../../data/models/treatments/medicine_taking/medicine_taking_response.dart';
+import '../../../../../bloc/purpose/purpose_bloc.dart';
+import '../../../../../components/loading_widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/empty_item.dart';
+import 'args/purpose_page_args.dart';
+import 'args/sub_purpose_page_args.dart';
+import 'widgets/purpose_item.dart';
+
+part 'mixin/purpose_mixin.dart';
+
+class PurposePage extends StatefulWidget {
+  const PurposePage({
+    super.key,
+    this.args,
+  });
+
+  final PurposePageArgs? args;
+
+  @override
+  State<PurposePage> createState() => _PurposePageState();
+}
+
+class _PurposePageState extends State<PurposePage> with PurposeMixin {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            context.translate('appointment'),
+            style: context.textStyle.appBarTitle,
+          ),
+        ),
+        body: SafeArea(
+          child: BlocConsumer<PurposeBloc, PurposeState>(
+            listenWhen: (previous, current) => previous.isAdding != current.isAdding,
+            listener: (_, state) {
+              if (state.isAdding) {
+                Future.delayed(const Duration(milliseconds: 1), () {
+                  scrollController.animateTo(
+                    scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeIn,
+                  );
+                });
+              }
+            },
+            builder: (context, state) => Stack(
+              children: [
+                state.isLoading || state.medicalHistory.isNotEmpty
+                    ? CustomScrollView(
+                        controller: scrollController,
+                        slivers: [
+                          if (state.medicalHistory.isNotEmpty) ...[
+                            const SliverGap(16),
+                            SliverPadding(
+                              padding: AppUtils.kPaddingHorizontal16,
+                              sliver: SliverList.separated(
+                                itemCount: state.medicalHistory.length,
+                                itemBuilder: (_, index) {
+                                  final data = state.medicalHistory[index];
+                                  final List<String> items = [
+                                    for (final SubPurposeMedicationTimesItem times
+                                        in state.medicationTimes[data.guid] ?? [])
+                                      getTimeText(
+                                        times,
+                                        state.medicalHistoryDrugs[times.data.medicineTakingId],
+                                      ),
+                                  ];
+                                  print('Purpose Items:$items');
+                                  return PurposeItemWidget(
+                                    title: data.illName ?? '',
+                                    subtitle: state.medicalHistoryDrugNames[data.guid]?.join(', ') ??
+                                        context.translate('no_drugs'),
+                                    imageUrl: data.doctorIdData?.medicPhoto ?? 'photo',
+                                    name: data.doctorIdData?.doctorName ?? '',
+                                    items: items,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.subPurposePage,
+                                        arguments: SubPurposePageArgs(
+                                          title: context.translate('appointments'),
+                                          naznachenieId: data.guid ?? '',
+                                          illName: data.illName ?? '',
+                                          comment: (data.comment ?? '').htmlToText,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (_, index) => AppUtils.kBoxHeight16,
+                              ),
+                            ),
+                            if (state.isAdding) ...[
+                              const SliverGap(16),
+                              const SliverToBoxAdapter(child: CustomCircularProgressIndicator())
+                            ],
+                          ],
+                          const SliverGap(16),
+                        ],
+                      )
+                    : Center(
+                        child: EmptyItem(
+                          title: '',
+                          desc: context.translate('not_drugs'),
+                          iconPath: 'assets/png/history_medic_empty.png',
+                        ),
+                      ),
+                if (state.isLoading) const CustomCircularProgressIndicator(),
+              ],
+            ),
+          ),
+        ),
+      );
+}

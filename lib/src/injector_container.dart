@@ -39,8 +39,8 @@ import 'presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc
 import 'presentation/bloc/main/survey/survey_bloc.dart';
 import 'presentation/bloc/main/treatments/treatments_bloc.dart';
 import 'presentation/bloc/my_visit/my_visit_bloc.dart';
+import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
-import 'presentation/bloc/subscription/subscription_bloc.dart';
 
 final sl = GetIt.instance;
 late Box<dynamic> _box;
@@ -174,8 +174,8 @@ void homeFeature(ApiClient authClient) {
         dio: sl(),
       ),
     )
+    ..registerFactory<ShowAllMyVisitsBloc>(() => ShowAllMyVisitsBloc(sl()))
     ..registerFactory<MyVisitBloc>(() => MyVisitBloc(sl()))
-    ..registerFactory<SubscriptionBloc>(() => SubscriptionBloc(sl()))
     ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()));
 }
 
@@ -200,7 +200,6 @@ void surveyFeature(ApiClient authClient) {
       ),
     );
 }
-
 
 void registerFeature(ApiClient authClient, ApiClient baseClient) {
   sl

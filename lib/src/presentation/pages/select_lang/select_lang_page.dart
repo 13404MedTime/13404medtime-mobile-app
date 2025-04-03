@@ -20,7 +20,7 @@ class _SelectLangPageState extends State<SelectLangPage> {
 
   @override
   void initState() {
-    selectedLang = 'ru';
+    selectedLang = localSource.locale;
     isLoading = false;
     super.initState();
   }

@@ -342,5 +342,6 @@
   "approved": "Tasdiqlangan",
   "are_you_sure_you_want_to_cancel": "Rostan ham bekor qilishni xohlaysizmi?",
   "do_you_want_accept": "Rostan ham qabul qilishni xohlaysizmi?",
-  "illness_name": "Kasallik nomi"
+  "illness_name": "Kasallik nomi",
+  "you_cant_remove_free_time": "Bo'sh vaqt o'chirib bo'lmaydi"
 }

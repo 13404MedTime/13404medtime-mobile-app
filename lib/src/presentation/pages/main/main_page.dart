@@ -9,18 +9,13 @@ import '../../../core/extension/extension.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/base_functions.dart';
 import '../../../core/utils/google_sign_in.dart';
-import '../../bloc/health/health_bloc.dart';
 import '../../bloc/main/home/home_bloc.dart';
 import '../../bloc/main/main_bloc.dart';
 import '../../bloc/main/profile/profile_bloc.dart';
 import '../../bloc/main/treatments/treatments_bloc.dart';
-import 'consultation/consultation_page.dart';
-import 'health/health_page.dart';
 import 'home/home_page.dart';
 import 'profile/profile_page.dart';
 import 'treatments/treatments_page.dart';
-
-part 'mixin/main_mixin.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -46,8 +41,8 @@ class _MainPageState extends State<MainPage> with MainMixin {
               index: state.bottomMenu.index,
               children: const [
                 HomePage(),
-                ConsultationPage(),
-                HealthPage(),
+                SizedBox(),
+                SizedBox(),
                 TreatmentsPage(),
                 ProfilePage(),
               ],
@@ -74,12 +69,6 @@ class _MainPageState extends State<MainPage> with MainMixin {
                   case 1:
                     tag = FirebaseAnalyticsEvents.consultationNavigationBtn;
                   case 2:
-                    context.read<HealthBloc>()
-                      ..add(const GetStepsCountOfTodayEvent())
-                      ..add(const GetArterialPressureEvent())
-                      ..add(const GetBloodSugarEvent())
-                      ..add(const GetTWHEvent())
-                      ..add(const GetPedometerEvent());
                     tag = FirebaseAnalyticsEvents.healthNavigationBtn;
                   case 3:
                     context.read<TreatmentsBloc>().add(const GetMedicineTakingMenuEvent());
