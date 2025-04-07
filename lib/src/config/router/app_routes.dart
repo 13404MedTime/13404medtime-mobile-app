@@ -12,6 +12,8 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import '../../presentation/bloc/doctor/login/login_bloc.dart';
 import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
@@ -272,6 +274,20 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (context) => sl<LoginBloc>(),
             child: const LoginPage(),
+          ),
+        );
+      case Routes.doctorMain:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<DoctorMainBloc>()),
+              BlocProvider(
+                create: (context) => sl<DoctorHomeBloc>()
+                  ..add(const GetPatients$DoctorHomeEvent())
+                  ..add(const GetDoctorBookingRequests$DoctorHomeEvent()),
+              ),
+            ],
+            child: const DoctorMainPage(),
           ),
         );
       case Routes.upcomingVisits:

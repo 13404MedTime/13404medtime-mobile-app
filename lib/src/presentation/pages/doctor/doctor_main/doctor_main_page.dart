@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/extension/extension.dart';
+import '../../../bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../../bloc/doctor/doctor_main/doctor_main_bloc.dart';
+import 'doctor_home/doctor_home_page.dart';
 
 class DoctorMainPage extends StatelessWidget {
   const DoctorMainPage({super.key});
@@ -10,11 +12,25 @@ class DoctorMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<DoctorMainBloc, DoctorMainState>(
         builder: (context, state) => Scaffold(
-          body: const SizedBox(),
+          body: IndexedStack(
+            index: state.pageIndex,
+            children: const [
+              DoctorHomePage(),
+              SizedBox(),
+              SizedBox(),
+              SizedBox(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: state.pageIndex,
             onTap: (value) {
               context.read<DoctorMainBloc>().add(ChangePage$DoctorMainEvent(value));
+              switch (value) {
+                case 0:
+                  context.read<DoctorHomeBloc>()
+                    ..add(const GetPatients$DoctorHomeEvent())
+                    ..add(const GetDoctorBookingRequests$DoctorHomeEvent());
+              }
             },
             items: [
               _navigationBarItem(

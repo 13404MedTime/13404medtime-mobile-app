@@ -20,6 +20,7 @@ import 'domain/network/api_client.dart';
 import 'domain/repositories/add_medicine/add_medicine_repository.dart';
 import 'domain/repositories/auth/auth_repository.dart';
 import 'domain/repositories/consultation/consultation_repository.dart';
+import 'domain/repositories/doctor/doctor_main/doctor_home/doctor_home_repository.dart';
 import 'domain/repositories/doctor/login/doctor_login_repository.dart';
 import 'domain/repositories/home/home_repository.dart';
 import 'domain/repositories/notification/notification_repository.dart';
@@ -35,6 +36,8 @@ import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import 'presentation/bloc/auth/register/register_bloc.dart';
 import 'presentation/bloc/consultation/consultation_bloc.dart';
+import 'presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
+import 'presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import 'presentation/bloc/doctor/login/login_bloc.dart';
 import 'presentation/bloc/main/home/home_bloc.dart';
 import 'presentation/bloc/main/main_bloc.dart';
@@ -150,8 +153,6 @@ Future<void> init() async {
   consultationFeature(baseClient);
 
   homeFeature(baseClient);
-
-  healthFeature(baseClient);
 
   profileFeature(baseClient, baseClient);
 
@@ -313,12 +314,23 @@ void doctorFeature(ApiClient client, ApiClient baseClient) {
         networkInfo: sl(),
       ),
     )
+    ..registerLazySingleton<DoctorHomeRepository>(
+      () => DoctorHomeRepositoryImpl(
+        apiClient: client,
+        baseClient: baseClient,
+        networkInfo: sl(),
+      ),
+    )
     ..registerFactory<LoginBloc>(
       () => LoginBloc(doctorLoginRepository: sl()),
     )
+    ..registerFactory<DoctorHomeBloc>(
+      () => DoctorHomeBloc(sl()),
+    )
     ..registerFactory<UpcomingVisitsBloc>(
       () => UpcomingVisitsBloc(sl()),
-    );
+    )
+    ..registerFactory<DoctorMainBloc>(DoctorMainBloc.new);
 }
 
 Future<void> initHive() async {
