@@ -1,0 +1,77 @@
+class SendAdviceResponse {
+  const SendAdviceResponse({
+    required this.status,
+    required this.description,
+    required this.tableSlug,
+    required this.amount,
+    required this.amountMedTaken,
+    required this.clientsId,
+    required this.clientName,
+    required this.clientSurname,
+    required this.companyServiceEnvironmentId,
+    required this.companyServiceProjectId,
+    required this.consultationType,
+    required this.createdTime,
+    required this.defaultNumber,
+    required this.doctorId,
+    required this.guid,
+    required this.illId,
+    required this.illName,
+    required this.incrementId,
+    required this.invite,
+    required this.multi,
+    required this.customMessage,
+  });
+
+  factory SendAdviceResponse.fromJson(Map<String, Object?> json) {
+    final data1 = json['data'] as Map<String, Object?>? ?? {};
+    final data = data1['data'] as Map<String, Object?>? ?? {};
+    final dataContent = data['data'] as Map<String, Object?>? ?? {};
+
+    return SendAdviceResponse(
+      status: json['status'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      tableSlug: data['table_slug'] as String? ?? '',
+      amount: dataContent['amount'] as String? ?? '',
+      amountMedTaken: dataContent['amount_med_taken'] as String? ?? '',
+      clientsId: dataContent['cleints_id'] as String? ?? '',
+      clientName: dataContent['client_name'] as String? ?? '',
+      clientSurname: dataContent['client_surname'] as String? ?? '',
+      companyServiceEnvironmentId: dataContent['company_service_environment_id'] as String? ?? '',
+      companyServiceProjectId: dataContent['company_service_project_id'] as String? ?? '',
+      consultationType: dataContent['consultation_type'] as String? ?? '',
+      createdTime: dataContent['created_time'] as String? ?? '',
+      defaultNumber: (dataContent['default_number'] as num?)?.toInt() ?? 0,
+      doctorId: dataContent['doctor_id'] as String? ?? '',
+      guid: dataContent['guid'] as String? ?? '',
+      illId: dataContent['ill_id'] as String? ?? '',
+      illName: dataContent['ill_name'] as String? ?? '',
+      incrementId: dataContent['increment_id'] as String? ?? '',
+      invite: dataContent['invite'] as bool? ?? false,
+      multi: (dataContent['multi'] as List?)?.cast<Object>() ?? [],
+      customMessage: json['custom_message'] as String? ?? '',
+    );
+  }
+
+  final String status;
+  final String description;
+  final String tableSlug;
+  final String amount;
+  final String amountMedTaken;
+  final String clientsId;
+  final String clientName;
+  final String clientSurname;
+  final String companyServiceEnvironmentId;
+  final String companyServiceProjectId;
+  final String consultationType;
+  final String createdTime;
+  final int defaultNumber;
+  final String doctorId;
+  final String guid;
+  final String illId;
+  final String illName;
+  final String incrementId;
+  final bool invite;
+  final List<Object> multi;
+  final String customMessage;
+}

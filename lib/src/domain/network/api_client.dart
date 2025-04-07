@@ -11,6 +11,11 @@ import '../../data/models/auth/send_code_response.dart';
 import '../../data/models/auth/verify_request.dart';
 import '../../data/models/consultation/check_consultation_days_response.dart';
 import '../../data/models/consultation/doctors_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_advice/client_medicine_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_advice/clients_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_advice/get_all_medicine_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_advice/send_advice_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_advice/unit_of_medicine.dart';
 import '../../data/models/doctor/doctor_main/doctor_check/doctor_appointment_response.dart';
 import '../../data/models/doctor/doctor_main/doctor_check/doctor_notifications_reponse.dart';
 import '../../data/models/doctor/doctor_main/doctor_check/medicine_full_info_response.dart';
@@ -367,6 +372,29 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
+  /// Get Clients
+  @POST('/v2/object/get-list/cleints')
+  Future<ClientsResponse> getClients(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+  );
+
+  /// Get Client Medicine
+  @POST('/v1/object/get-list/ill')
+  Future<ClientMedicineResponse> getClientMedicine(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+    @Query('project-id') String projectId,
+  );
+
+  /// Send Doctor Advice
+  @POST('/v1/object/naznachenie')
+  Future<SendAdviceResponse> sendAdvice(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+    @Header('Authorization') String token,
+  );
+
   /// Add Doctor Free Time
   @POST('/v2/items/doctor_booking')
   Future<AddFreeTimeResponse> addFreeTime(
@@ -424,6 +452,14 @@ abstract class ApiClient {
     @Header('Authorization') String token,
   );
 
+  /// Get Unit of Medicine
+  @POST('/v1/object/get-list/unit_of_measure')
+  Future<UnitOfMedicineResponse> getUnitOfMedicine(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+    @Header('Authorization') String token,
+  );
+
   /// Send Full Advice
   @POST('/v1/object/medicine_taking')
   Future<void> sendFullAdvice(
@@ -443,6 +479,14 @@ abstract class ApiClient {
   @POST('/v2/object/get-list/naznachenie')
   Future<DoctorAppointmentResponse> getDoctorAppointments(
     @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+  );
+
+  /// Get All Medicines
+  @POST('/v1/object/get-list/preparati')
+  Future<GetAllMedicinesResponse> getAllMedicine(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
     @Header('Authorization') String token,
   );
 

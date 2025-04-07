@@ -13,6 +13,7 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_advice/doctor_advice_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_time_bloc.dart';
@@ -293,6 +294,9 @@ sealed class AppRoutes {
                 create: (context) => sl<DoctorHomeBloc>()
                   ..add(const GetPatients$DoctorHomeEvent())
                   ..add(const GetDoctorBookingRequests$DoctorHomeEvent()),
+              ),
+              BlocProvider(
+                create: (context) => sl<DoctorAdviceBloc>()..add(const GetAllMedicines$DoctorAdviceEvent('')),
               ),
               BlocProvider(
                 create: (context) => sl<DoctorCheckBloc>()..add(const GetDoctorAppointments$DoctorCheckEvent()),
