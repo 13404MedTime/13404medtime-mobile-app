@@ -11,6 +11,10 @@ import '../../data/models/auth/send_code_response.dart';
 import '../../data/models/auth/verify_request.dart';
 import '../../data/models/consultation/check_consultation_days_response.dart';
 import '../../data/models/consultation/doctors_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_check/doctor_appointment_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_check/doctor_notifications_reponse.dart';
+import '../../data/models/doctor/doctor_main/doctor_check/medicine_full_info_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_check/patient_medication_response.dart';
 import '../../data/models/doctor/doctor_main/doctor_home/add_free_time_response.dart';
 import '../../data/models/doctor/doctor_main/doctor_home/doctor_patient_response.dart';
 import '../../data/models/doctor/login/doctor_login_response.dart';
@@ -377,6 +381,13 @@ abstract class ApiClient {
     @Header('Authorization') String token,
   );
 
+  /// Get doctor notifications
+  @POST('v2/object/get-list/notifications')
+  Future<DoctorNotificationsResponse> doctorNotifications(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+  );
+
   /// Delete doctor free time
   @DELETE('/v2/items/doctor_booking/{timeId}')
   Future<void> deleteDoctorFreeTime(
@@ -418,6 +429,27 @@ abstract class ApiClient {
   Future<void> sendFullAdvice(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
+    @Header('Authorization') String token,
+  );
+
+  /// Get Medicine Full Info
+  @POST('/v2/object/get-list/medicine_taking')
+  Future<MedicineFullInfoResponse> getMedicineFullInfo(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+  );
+
+  /// Get Doctor Appointments
+  @POST('/v2/object/get-list/naznachenie')
+  Future<DoctorAppointmentResponse> getDoctorAppointments(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
+  );
+
+  /// Get Patient Medication
+  @POST('/v2/object/get-list/patient_medication')
+  Future<PatientMedicationResponse> getPatientMedication(
+    @Body() Map<String, dynamic> request,
     @Header('Authorization') String token,
   );
 }

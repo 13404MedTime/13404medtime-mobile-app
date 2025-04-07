@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/extension/extension.dart';
+import '../../../bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
 import '../../../bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../../bloc/doctor/doctor_main/doctor_main_bloc.dart';
+import 'doctor_check/doctor_check_page.dart';
 import 'doctor_home/doctor_home_page.dart';
 import 'doctor_profile/doctor_profile.dart';
 
@@ -18,7 +20,7 @@ class DoctorMainPage extends StatelessWidget {
             children: const [
               DoctorHomePage(),
               SizedBox(),
-              SizedBox(),
+              DoctorCheckPage(),
               DoctorProfile(),
             ],
           ),
@@ -31,6 +33,8 @@ class DoctorMainPage extends StatelessWidget {
                   context.read<DoctorHomeBloc>()
                     ..add(const GetPatients$DoctorHomeEvent())
                     ..add(const GetDoctorBookingRequests$DoctorHomeEvent());
+                case 2:
+                  context.read<DoctorCheckBloc>().add(const GetDoctorAppointments$DoctorCheckEvent());
               }
             },
             items: [

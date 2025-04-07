@@ -13,6 +13,8 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_time_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
@@ -36,6 +38,7 @@ import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
+import '../../presentation/pages/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_page.dart';
 import '../../presentation/pages/doctor/doctor_main/doctor_home/add_free_time/add_free_time.dart';
 import '../../presentation/pages/doctor/doctor_main/doctor_home/doctor_home_page.dart';
 import '../../presentation/pages/doctor/doctor_main/doctor_home/doctor_requests/doctor_requests_page.dart';
@@ -291,6 +294,9 @@ sealed class AppRoutes {
                   ..add(const GetPatients$DoctorHomeEvent())
                   ..add(const GetDoctorBookingRequests$DoctorHomeEvent()),
               ),
+              BlocProvider(
+                create: (context) => sl<DoctorCheckBloc>()..add(const GetDoctorAppointments$DoctorCheckEvent()),
+              ),
             ],
             child: const DoctorMainPage(),
           ),
@@ -306,6 +312,23 @@ sealed class AppRoutes {
                     ..add(const GetDoctorBookingRequests$DoctorHomeEvent())),
             ],
             child: AddFreeTime(id: settings.arguments as DoctorBooking?),
+          ),
+        );
+      case Routes.clientProfile:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => DoctorCheckClientBloc(sl())
+              ..add(
+                GetMedicineInfo$DoctorCheckClientEvent(
+                  guid: (settings.arguments! as List<String>).first,
+                  endDate: DateTime.now().toIso8601String(),
+                  startDate: DateTime.now().subtract(const Duration(days: 7)).toIso8601String(),
+                ),
+              ),
+            child: DoctorCheckClientPage(
+              name: (settings.arguments! as List<String>).last,
+              guid: (settings.arguments! as List<String>).first,
+            ),
           ),
         );
       case Routes.doctorRequests:
