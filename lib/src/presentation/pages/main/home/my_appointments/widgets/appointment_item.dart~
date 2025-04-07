@@ -58,6 +58,19 @@ class AppointmentItemWidget extends StatelessWidget {
                         maxLines: 10,
                       ),
                       AppUtils.kBoxHeight6,
+                      // if (shortDescription.isNotEmpty) ...[
+                      //   Text(
+                      //     shortDescription,
+                      //     style: TextStyle(
+                      //       fontSize: 12,
+                      //       fontWeight: FontWeight.w600,
+                      //       color: context.theme.colorScheme.onSurface,
+                      //     ),
+                      //     overflow: TextOverflow.ellipsis,
+                      //     maxLines: 1,
+                      //   ),
+                      //   AppUtils.kBoxHeight6,
+                      // ],
                       Text(
                         time,
                         style: TextStyle(

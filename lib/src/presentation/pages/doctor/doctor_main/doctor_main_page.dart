@@ -5,6 +5,7 @@ import '../../../../core/extension/extension.dart';
 import '../../../bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../../bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import 'doctor_home/doctor_home_page.dart';
+import 'doctor_profile/doctor_profile.dart';
 
 class DoctorMainPage extends StatelessWidget {
   const DoctorMainPage({super.key});
@@ -18,7 +19,7 @@ class DoctorMainPage extends StatelessWidget {
               DoctorHomePage(),
               SizedBox(),
               SizedBox(),
-              SizedBox(),
+              DoctorProfile(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(

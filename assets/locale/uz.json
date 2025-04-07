@@ -343,5 +343,7 @@
   "are_you_sure_you_want_to_cancel": "Rostan ham bekor qilishni xohlaysizmi?",
   "do_you_want_accept": "Rostan ham qabul qilishni xohlaysizmi?",
   "illness_name": "Kasallik nomi",
-  "you_cant_remove_free_time": "Bo'sh vaqt o'chirib bo'lmaydi"
+  "you_cant_remove_free_time": "Bo'sh vaqt o'chirib bo'lmaydi",
+  "default_code": "Standart kod: 1212",
+  "health_info": "Apple Health ma'lumotlari"
 }

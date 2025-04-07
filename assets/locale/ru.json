@@ -294,7 +294,7 @@
   "patients": "Пациенты",
   "order_success": "Заказ успешно оформлен",
   "back": "Назад",
-  "order": "Забронировать сеанс",
+  "order": "Забронировать",
   "expired_date": "Прошлое не может быть определено",
   "requests": "Запросы",
   "are_you_want_order": "Вы действительно хотите оформить заказ?",
@@ -331,12 +331,14 @@
   "patient_comments": "Комментарии пациента",
   "reject": "Отклонить",
   "accept": "Принять",
-  "comment_required": "Комментарий обязателен",
+  "comment_required": "Требуется комментарий",
   "rejected": "Отклонено",
   "pending": "В ожидании",
   "approved": "Подтверждено",
   "are_you_sure_you_want_to_cancel": "Вы уверены, что хотите отменить?",
   "do_you_want_accept": "Вы действительно хотите принять?",
   "illness_name": "Название болезни",
-  "you_cant_remove_free_time": "Вы не можете удалить свободное время"
+  "you_cant_remove_free_time": "Вы не можете удалить свободное время",
+  "default_code": "Код по умолчанию: 1212",
+  "health_info": "Информация от Apple Health"
 }

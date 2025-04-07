@@ -97,7 +97,7 @@ Future<void> init() async {
               }
             },
           ),
-          chuck.getDioInterceptor(),
+          // chuck.getDioInterceptor(),
         ],
       ),
   );

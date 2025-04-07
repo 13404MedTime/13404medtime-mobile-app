@@ -423,40 +423,79 @@ class _MyVisitPageState extends State<MyVisitPage> with MyVisitMixin, RemoteLike
                               final add = await showDialog<bool>(
                                 context: context,
                                 builder: (context) => AlertDialog(
+                                  backgroundColor: context.colorScheme.background,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  contentPadding: const EdgeInsets.all(24),
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         context.translate('leave_comment'),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: context.colorScheme.primary,
+                                        ),
                                       ),
-                                      AppUtils.kGap24,
+                                      const SizedBox(height: 16),
                                       TextField(
                                         controller: textController,
                                         maxLines: 2,
                                         decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: context.colorScheme.surface,
                                           border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: context.colorScheme.outline,
-                                            ),
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: BorderSide(color: context.colorScheme.outline),
                                           ),
                                           hintText: context.translate('comment_required'),
+                                          hintStyle: TextStyle(
+                                            color: context.colorScheme.onSurface.withOpacity(0.3),
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: 14,
+                                          ),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                         ),
+                                        style: TextStyle(color: context.colorScheme.onSurface),
                                       ),
+                                      const SizedBox(height: 20),
                                     ],
                                   ),
+                                  actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context, false),
-                                      child: Text(context.translate('back')),
+                                      child: Text(
+                                        context.translate('back'),
+                                        style: TextStyle(
+                                          color: context.colorScheme.secondary,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
-                                    TextButton(
+                                    ElevatedButton(
                                       onPressed: () async {
                                         final result = await onPressed();
                                         if (context.mounted && result) {
                                           Navigator.pop(context, true);
                                         }
                                       },
-                                      child: Text(context.translate('order')),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: context.colorScheme.primary,
+                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        context.translate('order'),
+                                        style: TextStyle(
+                                          color: context.colorScheme.onPrimary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),

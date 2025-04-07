@@ -8,6 +8,7 @@ import '../../../../core/constants/app_keys.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/extension/extension.dart';
 import '../../../../core/utils/base_functions.dart';
+import '../../../bloc/health/health_bloc.dart';
 import '../../../bloc/main/home/home_bloc.dart';
 import '../../../components/snack/snack.dart';
 import '../profile/disease_history/args/disease_history_args.dart';
@@ -31,7 +32,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with HomeMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage>
+    with HomeMixin, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -67,156 +69,201 @@ class _HomePageState extends State<HomePage> with HomeMixin, WidgetsBindingObser
                   ? const Center(
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : CustomScrollView(
-                      controller: _scrollController,
-                      slivers: [
-                        HomeTitleWidget(
-                          title: context.translate('statistics'),
-                          haveSubtitle: false,
-                        ),
-                        HomeStatisticsWidget(
-                          avarageDistance: state.avarageDistance,
-                          avarageHeart: state.avarageHeart.toInt(),
-                        ),
-                        HomeTitleWidget(
-                          title: context.translate('appointments'),
-                          haveSubtitle: false,
-                        ),
-                        const HomeAppointmentsWidget(),
-                        if (state.myVisits.isNotEmpty) ...[
+                  : BlocBuilder<HealthBloc, HealthState>(
+                      builder: (context, state1) {
+                      num bestCount = 0;
+                      num bestTime = 0;
+                      for (final i in state1.pedometerList) {
+                        if (i.stepCount != null && i.stepCount! > bestCount) {
+                          bestCount = i.stepCount!;
+                        }
+                        if (i.hour != null &&
+                            i.minutes != null &&
+                            i.hour! + i.minutes! / 60 > bestTime) {
+                          bestTime = i.hour! + i.minutes! / 60;
+                        }
+                      }
+                      double averageDistance = 0;
+                      double averageHeart = 0;
+                      for (final i in state1.pedometerList) {
+                        averageDistance += i.stepCount ?? 0;
+                      }
+                      for (final i in state1.arterialPressureList) {
+                        averageHeart += i.pulse ?? 0;
+                      }
+                      return CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
                           HomeTitleWidget(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                Routes.showAllMyVisits,
-                              );
-                            },
-                            title: context.translate('my_visits'),
-                            subtitle: context.translate('show_all'),
-                            haveSubtitle: state.myVisits.isNotEmpty,
+                            title: context.translate('statistics'),
+                            haveSubtitle: false,
                           ),
-                          HomeMyVisitsListWidget(
-                            myVisits: state.myVisits,
-                            onTap: (index) {
-                              Navigator.pushNamed(
-                                context,
-                                Routes.myVisit,
-                                arguments: MyVisitArgument(
-                                  myVisit: state.myVisits[index],
-                                ),
-                              );
-                            },
+                          HomeStatisticsWidget(
+                            avarageDistance:
+                                (averageDistance / state1.pedometerList.length != 0 ? state1.pedometerList.length : 1)
+                                    .toInt(),
+                            avarageHeart: (averageHeart /
+                                    state1.arterialPressureList.length != 0 ? state1.arterialPressureList.length : 1)
+                                .toInt(),
                           ),
-                          const SliverGap(8),
-                        ] else if (state.isVisitsLoading && state.myVisits.isEmpty) ...[
-                          const SliverPadding(
-                            padding: EdgeInsets.only(top: 24),
-                            sliver: SliverToBoxAdapter(
-                              child: HorizontalHomeItemShimmer(),
-                            ),
-                          ),
-                        ] else
-                          SliverToBoxAdapter(
-                            child: EmptyItem(
-                              title: context.translate('my_visits'),
-                              desc: context.translate('not_visits'),
-                              iconPath: 'assets/png/visit_empty.png',
-                            ),
-                          ),
-                        HomeTitleWidget(
-                          title: context.translate('top_performance'),
-                          haveSubtitle: false,
-                        ),
-                        HomeTopPerformanceWidget(
-                          bestDistance: state.bestDistance,
-                          bestTime: state.bestTime,
-                        ),
-                        if (state.medicalHistory.isNotEmpty) ...[
                           HomeTitleWidget(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                Routes.diseaseHistory,
-                                arguments: DiseaseHistoryArgs(
-                                  diseaseItemsList: state.medicalHistory,
-                                  medicalHistoryDrugNames: state.medicalHistoryDrugNames,
-                                  medicalHistoryDrugs: state.medicalHistoryDrugs,
-                                  medicationTimes: state.medicationTimes,
-                                ),
-                              );
-                            },
-                            title: context.translate('medical_history'),
-                            subtitle: context.translate('show_all'),
-                            haveSubtitle: state.medicalHistory.isNotEmpty,
+                            title: context.translate('appointments'),
+                            haveSubtitle: false,
                           ),
-                          HomeHistoryListWidget(
-                            medicalData: state.medicalHistory,
-                            names: state.medicalHistoryDrugNames,
-                            onTap: (index) {
-                              if ((state.medicalHistory[index].amount ?? 0) > 0) {
+                          const HomeAppointmentsWidget(),
+                          if (state.myVisits.isNotEmpty) ...[
+                            HomeTitleWidget(
+                              onTap: () {
                                 Navigator.pushNamed(
                                   context,
-                                  Routes.subPurposePage,
-                                  arguments: SubPurposePageArgs(
-                                    title: context.translate('medical_history'),
-                                    naznachenieId: state.medicalHistory[index].guid ?? '',
-                                    illName: state.medicalHistory[index].illName ?? '',
-                                    comment: state.medicalHistory[index].comment ?? '',
+                                  Routes.showAllMyVisits,
+                                );
+                              },
+                              title: context.translate('my_visits'),
+                              subtitle: context.translate('show_all'),
+                              haveSubtitle: state.myVisits.isNotEmpty,
+                            ),
+                            HomeMyVisitsListWidget(
+                              myVisits: state.myVisits,
+                              onTap: (index) {
+                                Navigator.pushNamed(
+                                  context,
+                                  Routes.myVisit,
+                                  arguments: MyVisitArgument(
+                                    myVisit: state.myVisits[index],
                                   ),
                                 );
-                              } else {
-                                Snack.showSnackBar(
+                              },
+                            ),
+                            const SliverGap(8),
+                          ] else if (state.isVisitsLoading &&
+                              state.myVisits.isEmpty) ...[
+                            const SliverPadding(
+                              padding: EdgeInsets.only(top: 24),
+                              sliver: SliverToBoxAdapter(
+                                child: HorizontalHomeItemShimmer(),
+                              ),
+                            ),
+                          ] else
+                            SliverToBoxAdapter(
+                              child: EmptyItem(
+                                title: context.translate('my_visits'),
+                                desc: context.translate('not_visits'),
+                                iconPath: 'assets/png/visit_empty.png',
+                              ),
+                            ),
+                          HomeTitleWidget(
+                            title: context.translate('top_performance'),
+                            haveSubtitle: false,
+                          ),
+                          HomeTopPerformanceWidget(
+                            bestDistance: bestCount,
+                            bestTime: bestTime,
+                          ),
+                          if (state.medicalHistory.isNotEmpty) ...[
+                            HomeTitleWidget(
+                              onTap: () {
+                                Navigator.pushNamed(
                                   context,
-                                  context.translate('drugs_are_not_available'),
+                                  Routes.diseaseHistory,
+                                  arguments: DiseaseHistoryArgs(
+                                    diseaseItemsList: state.medicalHistory,
+                                    medicalHistoryDrugNames:
+                                        state.medicalHistoryDrugNames,
+                                    medicalHistoryDrugs:
+                                        state.medicalHistoryDrugs,
+                                    medicationTimes: state.medicationTimes,
+                                  ),
                                 );
-                              }
-                            },
-                          ),
-                          const SliverGap(8),
-                        ] else if (state.isMedicalHistoryLoading && state.medicalHistory.isEmpty) ...[
-                          const SliverPadding(
-                            padding: EdgeInsets.only(top: 24),
-                            sliver: SliverToBoxAdapter(
-                              child: HorizontalHomeItemShimmer(),
-                            ),
-                          ),
-                        ] else
-                          SliverToBoxAdapter(
-                            child: EmptyItem(
+                              },
                               title: context.translate('medical_history'),
-                              desc: context.translate('not_medical_history'),
-                              iconPath: 'assets/png/history_medic_empty.png',
+                              subtitle: context.translate('show_all'),
+                              haveSubtitle: state.medicalHistory.isNotEmpty,
                             ),
-                          ),
-                        ValueListenableBuilder(
-                          valueListenable: localSource.prefes.listenable(
-                            keys: [AppKeys.surveyCount],
-                          ),
-                          builder: (_, value, __) => SurveyWidget(
-                            onTap: () async {
-                              await sendAnalyticsEvent(
-                                tag: FirebaseAnalyticsEvents.surveyMainViewBtn,
-                                parameters: {'user_name': localSource.firstName},
-                              ).then((value) {
-                                if (context.mounted) {
+                            HomeHistoryListWidget(
+                              medicalData: state.medicalHistory,
+                              names: state.medicalHistoryDrugNames,
+                              onTap: (index) {
+                                if ((state.medicalHistory[index].amount ?? 0) >
+                                    0) {
                                   Navigator.pushNamed(
                                     context,
-                                    Routes.survey,
+                                    Routes.subPurposePage,
+                                    arguments: SubPurposePageArgs(
+                                      title:
+                                          context.translate('medical_history'),
+                                      naznachenieId:
+                                          state.medicalHistory[index].guid ??
+                                              '',
+                                      illName:
+                                          state.medicalHistory[index].illName ??
+                                              '',
+                                      comment:
+                                          state.medicalHistory[index].comment ??
+                                              '',
+                                    ),
+                                  );
+                                } else {
+                                  Snack.showSnackBar(
+                                    context,
+                                    context
+                                        .translate('drugs_are_not_available'),
                                   );
                                 }
-                              });
-                            },
-                            countAnalysis: localSource.surveyCount,
+                              },
+                            ),
+                            const SliverGap(8),
+                          ] else if (state.isMedicalHistoryLoading &&
+                              state.medicalHistory.isEmpty) ...[
+                            const SliverPadding(
+                              padding: EdgeInsets.only(top: 24),
+                              sliver: SliverToBoxAdapter(
+                                child: HorizontalHomeItemShimmer(),
+                              ),
+                            ),
+                          ] else
+                            SliverToBoxAdapter(
+                              child: EmptyItem(
+                                title: context.translate('medical_history'),
+                                desc: context.translate('not_medical_history'),
+                                iconPath: 'assets/png/history_medic_empty.png',
+                              ),
+                            ),
+                          ValueListenableBuilder(
+                            valueListenable: localSource.prefes.listenable(
+                              keys: [AppKeys.surveyCount],
+                            ),
+                            builder: (_, value, __) => SurveyWidget(
+                              onTap: () async {
+                                await sendAnalyticsEvent(
+                                  tag:
+                                      FirebaseAnalyticsEvents.surveyMainViewBtn,
+                                  parameters: {
+                                    'user_name': localSource.firstName
+                                  },
+                                ).then((value) {
+                                  if (context.mounted) {
+                                    Navigator.pushNamed(
+                                      context,
+                                      Routes.survey,
+                                    );
+                                  }
+                                });
+                              },
+                              countAnalysis: localSource.surveyCount,
+                            ),
                           ),
-                        ),
-                        AppUtils.kSliverGap40,
-                        AppUtils.kSliverGap40,
-                      ],
-                    ),
+                          AppUtils.kSliverGap40,
+                          AppUtils.kSliverGap40,
+                        ],
+                      );
+                    }),
             ),
           ),
           floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) => previous.unreadNotificationsCount != current.unreadNotificationsCount,
+            buildWhen: (previous, current) =>
+                previous.unreadNotificationsCount !=
+                current.unreadNotificationsCount,
             builder: (context, state) => FloatingActionButton(
               onPressed: () async {
                 await sendAnalyticsEvent(

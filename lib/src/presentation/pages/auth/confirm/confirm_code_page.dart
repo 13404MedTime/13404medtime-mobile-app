@@ -12,7 +12,6 @@ import '../../../bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../../components/buttons/bottom_navigation_button.dart';
 import '../../../components/loading_widgets/modal_progress_hud.dart';
 import '../../../components/snack/snack.dart';
-import 'widgets/timer_widget.dart';
 
 part 'mixin/confirm_code_mixin.dart';
 
@@ -136,15 +135,10 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> with ConfirmCodeMixin
                     ),
                   ),
                   AppUtils.kBoxHeight16,
-                  TimerWidget(
-                    onTap: () {
-                      context.read<ConfirmCodeBloc>().add(
-                            ConfirmCodeEvent.sendAgain(
-                              widget.state.phone,
-                            ),
-                          );
-                    },
-                  )
+                  Text(
+                    context.translate('default_code'),
+                    style: TextStyle(color: context.colorScheme.onBackground.withOpacity(0.6)),
+                  ),
                 ],
               ),
             ),
