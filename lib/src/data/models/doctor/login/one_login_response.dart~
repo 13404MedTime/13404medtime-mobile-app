@@ -1,0 +1,245 @@
+class OneLoginResponse {
+  const OneLoginResponse({
+    required this.status,
+    required this.description,
+    required this.data,
+  });
+
+  factory OneLoginResponse.fromJson(Map<String, Object?> json) =>
+      OneLoginResponse(
+        status: json['status'] as String? ?? '',
+        description: json['description'] as String? ?? '',
+        data: Data.fromJson(json['data'] as Map<String, Object?>? ?? {}),
+      );
+  final String status;
+  final String description;
+  final Data data;
+
+  Map<String, Object?> toJson() => {
+        'status': status,
+        'description': description,
+        'data': data.toJson(),
+      };
+}
+
+class Data {
+  const Data({
+    required this.companies,
+    required this.userId,
+  });
+
+  factory Data.fromJson(Map<String, Object?> json) => Data(
+        companies: (json['companies'] as List<Object?>?)
+                ?.map((company) =>
+                    Company.fromJson(company as Map<String, Object?>? ?? {}))
+                .toList() ??
+            [],
+        userId: json['user_id'] as String? ?? '',
+      );
+  final List<Company> companies;
+  final String userId;
+
+  Map<String, Object?> toJson() => {
+        'companies': companies.map((company) => company.toJson()).toList(),
+        'user_id': userId,
+      };
+}
+
+class Company {
+  const Company({
+    required this.id,
+    required this.name,
+    required this.ownerId,
+    required this.projects,
+  });
+
+  factory Company.fromJson(Map<String, Object?> json) => Company(
+        id: json['id'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        ownerId: json['owner_id'] as String? ?? '',
+        projects: (json['projects'] as List<Object?>?)
+                ?.map((project) =>
+                    Project.fromJson(project as Map<String, Object?>? ?? {}))
+                .toList() ??
+            [],
+      );
+  final String id;
+  final String name;
+  final String ownerId;
+  final List<Project> projects;
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'name': name,
+        'owner_id': ownerId,
+        'projects': projects.map((project) => project.toJson()).toList(),
+      };
+}
+
+class Project {
+  const Project({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.domain,
+    required this.resourceEnvironments,
+    required this.currencies,
+  });
+
+  factory Project.fromJson(Map<String, Object?> json) => Project(
+        id: json['id'] as String? ?? '',
+        companyId: json['company_id'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        domain: json['domain'] as String? ?? '',
+        resourceEnvironments: (json['resource_environments'] as List<Object?>?)
+                ?.map((env) => ResourceEnvironment.fromJson(
+                    env as Map<String, Object?>? ?? {}))
+                .toList() ??
+            [],
+        currencies: json['currencies'] as List<dynamic>? ?? [],
+      );
+  final String id;
+  final String companyId;
+  final String name;
+  final String domain;
+  final List<ResourceEnvironment> resourceEnvironments;
+  final List<dynamic> currencies;
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'company_id': companyId,
+        'name': name,
+        'domain': domain,
+        'resource_environments':
+            resourceEnvironments.map((env) => env.toJson()).toList(),
+        'currencies': currencies,
+      };
+}
+
+class ResourceEnvironment {
+  const ResourceEnvironment({
+    required this.id,
+    required this.projectId,
+    required this.resourceId,
+    required this.environmentId,
+    required this.isConfigured,
+    required this.resourceType,
+    required this.serviceType,
+    required this.name,
+    required this.displayColor,
+    required this.description,
+    required this.clientTypes,
+    required this.accessType,
+  });
+
+  factory ResourceEnvironment.fromJson(Map<String, Object?> json) =>
+      ResourceEnvironment(
+        id: json['id'] as String? ?? '',
+        projectId: json['project_id'] as String? ?? '',
+        resourceId: json['resource_id'] as String? ?? '',
+        environmentId: json['environment_id'] as String? ?? '',
+        isConfigured: json['is_configured'] as bool? ?? false,
+        resourceType: json['resource_type'] as int? ?? 0,
+        serviceType: json['service_type'] as int? ?? 0,
+        name: json['name'] as String? ?? '',
+        displayColor: json['display_color'] as String? ?? '',
+        description: json['description'] as String? ?? '',
+        clientTypes: ClientTypes.fromJson(
+            json['client_types'] as Map<String, Object?>? ?? {}),
+        accessType: json['access_type'] as String? ?? '',
+      );
+  final String id;
+  final String projectId;
+  final String resourceId;
+  final String environmentId;
+  final bool isConfigured;
+  final int resourceType;
+  final int serviceType;
+  final String name;
+  final String displayColor;
+  final String description;
+  final ClientTypes clientTypes;
+  final String accessType;
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'project_id': projectId,
+        'resource_id': resourceId,
+        'environment_id': environmentId,
+        'is_configured': isConfigured,
+        'resource_type': resourceType,
+        'service_type': serviceType,
+        'name': name,
+        'display_color': displayColor,
+        'description': description,
+        'client_types': clientTypes.toJson(),
+        'access_type': accessType,
+      };
+}
+
+class ClientTypes {
+  const ClientTypes({
+    required this.count,
+    required this.response,
+  });
+
+  factory ClientTypes.fromJson(Map<String, Object?> json) => ClientTypes(
+        count: json['count'] as int? ?? 0,
+        response: (json['response'] as List<Object?>?)
+                ?.map((client) => ClientTypeResponse.fromJson(
+                    client as Map<String, Object?>? ?? {}))
+                .toList() ??
+            [],
+      );
+  final int count;
+  final List<ClientTypeResponse> response;
+
+  Map<String, Object?> toJson() => {
+        'count': count,
+        'response': response.map((client) => client.toJson()).toList(),
+      };
+}
+
+class ClientTypeResponse {
+  const ClientTypeResponse({
+    required this.confirmBy,
+    required this.guid,
+    required this.name,
+    required this.projectId,
+    required this.selfRecover,
+    required this.selfRegister,
+    required this.sessionLimit,
+    required this.tableSlug,
+  });
+
+  factory ClientTypeResponse.fromJson(Map<String, Object?> json) =>
+      ClientTypeResponse(
+        confirmBy: json['confirm_by'] as String? ?? '',
+        guid: json['guid'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        projectId: json['project_id'] as String? ?? '',
+        selfRecover: json['self_recover'] as bool? ?? false,
+        selfRegister: json['self_register'] as bool? ?? false,
+        sessionLimit: json['session_limit'] as int? ?? 0,
+        tableSlug: json['table_slug'] as String? ?? '',
+      );
+  final String confirmBy;
+  final String guid;
+  final String name;
+  final String projectId;
+  final bool selfRecover;
+  final bool selfRegister;
+  final int sessionLimit;
+  final String tableSlug;
+
+  Map<String, Object?> toJson() => {
+        'confirm_by': confirmBy,
+        'guid': guid,
+        'name': name,
+        'project_id': projectId,
+        'self_recover': selfRecover,
+        'self_register': selfRegister,
+        'session_limit': sessionLimit,
+        'table_slug': tableSlug,
+      };
+}

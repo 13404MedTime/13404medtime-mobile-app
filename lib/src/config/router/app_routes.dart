@@ -12,6 +12,8 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
+import '../../presentation/bloc/doctor/login/login_bloc.dart';
 import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
 import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
@@ -30,11 +32,11 @@ import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
+import '../../presentation/pages/doctor/doctor_main/doctor_main_page.dart';
+import '../../presentation/pages/doctor/login/login_page.dart';
 import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
 import '../../presentation/pages/main/consultation/specialists/specialists_page.dart';
-import '../../presentation/pages/main/health/args/health_args.dart';
-import '../../presentation/pages/main/health/sub_health/sub_health_page.dart';
 import '../../presentation/pages/main/home/medical_history/medical_history_page.dart';
 import '../../presentation/pages/main/home/my_appointments/my_appointments_page.dart';
 import '../../presentation/pages/main/home/my_visit/my_visit_page.dart';
@@ -228,12 +230,6 @@ sealed class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => PhotoViewPage(imageUrl: settings.arguments! as String),
         );
-      case Routes.subHealth:
-        return MaterialPageRoute(
-          builder: (_) => SubHealthPage(
-            args: settings.arguments! as SubHealthArgs,
-          ),
-        );
       case Routes.showAllMyVisits:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -260,6 +256,13 @@ sealed class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => MedicationFilesPage(
             args: settings.arguments is MedicationFilesArgs ? settings.arguments! as MedicationFilesArgs : null,
+          ),
+        );
+      case Routes.login:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<LoginBloc>(),
+            child: const LoginPage(),
           ),
         );
       case Routes.upcomingVisits:

@@ -11,6 +11,8 @@ import '../../data/models/auth/send_code_response.dart';
 import '../../data/models/auth/verify_request.dart';
 import '../../data/models/consultation/check_consultation_days_response.dart';
 import '../../data/models/consultation/doctors_response.dart';
+import '../../data/models/doctor/login/doctor_login_response.dart';
+import '../../data/models/doctor/login/one_login_response.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_request.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_response.dart';
 import '../../data/models/home/get_medical_history/get_medical_history_response.dart';
@@ -341,6 +343,22 @@ abstract class ApiClient {
   Future<BookDoctorResponse> bookDoctor(
     @Body() Map<String, dynamic> request,
     @Header('Authorization') String token,
+  );
+
+  /// Doctor Requests ///
+
+  /// Doctor login
+  @POST('/v2/multi-company/one-login')
+  Future<OneLoginResponse> oneLogin(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
+  /// Get doctor token
+  @POST('/v2/login')
+  Future<DoctorLoginResponse> doctorLogin(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
   );
 
   /// Delete doctor free time
