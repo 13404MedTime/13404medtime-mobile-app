@@ -246,25 +246,25 @@ class HealthServiceImpl implements HealthService {
         endTime: endTime,
       );
       final Map<String, TWHModel> map = {};
-      for (final i in temperature) {
+      for(final i in temperature){
         final date = i.dateFrom.toIso8601String().ddMMyyyy;
         map[date] = TWHModel(
           date: '$date ${i.dateFrom.toIso8601String().hhmm}',
-          bodyTemperature:
-              num.tryParse(i.value.toString().substring(34).split(',').join()),
+          bodyTemperature: num.tryParse(
+              i.value.toString().substring(34).split(',').join()),
         );
       }
-      for (final i in weight) {
+      for(final i in weight){
         final date = i.dateFrom.toIso8601String().ddMMyyyy;
         final exist = map[date];
-        if (exist != null) {
+        if(exist != null){
           map[date] = TWHModel(
             date: exist.date,
             bodyTemperature: exist.bodyTemperature,
             weight: num.tryParse(
                 i.value.toString().substring(34).split(',').join()),
           );
-        } else {
+        }else{
           map[date] = TWHModel(
             date: '$date ${i.dateFrom.toIso8601String().hhmm}',
             weight: num.tryParse(
@@ -272,10 +272,10 @@ class HealthServiceImpl implements HealthService {
           );
         }
       }
-      for (final i in height) {
+      for(final i in height){
         final date = i.dateFrom.toIso8601String().ddMMyyyy;
         final exist = map[date];
-        if (exist != null) {
+        if(exist != null){
           map[date] = TWHModel(
             date: exist.date,
             bodyTemperature: exist.bodyTemperature,
@@ -283,7 +283,7 @@ class HealthServiceImpl implements HealthService {
             height: num.tryParse(
                 i.value.toString().substring(34).split(',').join()),
           );
-        } else {
+        }else{
           map[date] = TWHModel(
             date: '$date ${i.dateFrom.toIso8601String().hhmm}',
             height: num.tryParse(
@@ -291,10 +291,10 @@ class HealthServiceImpl implements HealthService {
           );
         }
       }
-      for (final i in bodyMassIndex) {
+      for(final i in bodyMassIndex){
         final date = i.dateFrom.toIso8601String().ddMMyyyy;
         final exist = map[date];
-        if (exist != null) {
+        if(exist != null){
           map[date] = TWHModel(
             date: exist.date,
             bodyTemperature: exist.bodyTemperature,
@@ -303,7 +303,7 @@ class HealthServiceImpl implements HealthService {
             averageBmi: num.tryParse(
                 i.value.toString().substring(34).split(',').join()),
           );
-        } else {
+        }else{
           map[date] = TWHModel(
             date: '$date ${i.dateFrom.toIso8601String().hhmm}',
             averageBmi: num.tryParse(

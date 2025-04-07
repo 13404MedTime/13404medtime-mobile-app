@@ -50,6 +50,7 @@ import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
 import '../../presentation/pages/main/consultation/specialists/specialists_page.dart';
 import '../../presentation/pages/main/health/args/health_args.dart';
+import '../../presentation/pages/main/health/sub_health/sub_health_page.dart';
 import '../../presentation/pages/main/home/medical_history/medical_history_page.dart';
 import '../../presentation/pages/main/home/my_appointments/my_appointments_page.dart';
 import '../../presentation/pages/main/home/my_visit/my_visit_page.dart';
@@ -243,6 +244,12 @@ sealed class AppRoutes {
       case Routes.photoView:
         return MaterialPageRoute(
           builder: (_) => PhotoViewPage(imageUrl: settings.arguments! as String),
+        );
+      case Routes.subHealth:
+        return MaterialPageRoute(
+          builder: (_) => SubHealthPage(
+            args: settings.arguments! as SubHealthArgs,
+          ),
         );
       case Routes.showAllMyVisits:
         return MaterialPageRoute(
