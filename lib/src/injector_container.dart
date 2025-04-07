@@ -46,6 +46,7 @@ import 'presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import 'presentation/bloc/my_visit/my_visit_bloc.dart';
 import 'presentation/bloc/purpose/purpose_bloc.dart';
 import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
+import 'presentation/bloc/specialists/specialists_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
 import 'presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 
@@ -146,9 +147,15 @@ Future<void> init() async {
 
   homeFeature(baseClient);
 
+  healthFeature(baseClient);
+
   profileFeature(baseClient, baseClient);
 
   surveyFeature(baseClient);
+
+  notificationFeature(baseClient);
+
+  doctorFeature(baseClient, authClient);
 
   treatmentsFeature(baseClient);
 }
@@ -274,6 +281,9 @@ void consultationFeature(ApiClient client) {
     )
     ..registerFactory<ConsultationBloc>(
       () => ConsultationBloc(sl()),
+    )
+    ..registerFactory<SpecialistsBloc>(
+      () => SpecialistsBloc(sl()),
     );
 }
 
