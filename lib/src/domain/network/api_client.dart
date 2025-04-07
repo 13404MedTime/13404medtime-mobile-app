@@ -9,6 +9,8 @@ import '../../data/models/auth/register/register_user_response.dart';
 import '../../data/models/auth/send_code_request.dart';
 import '../../data/models/auth/send_code_response.dart';
 import '../../data/models/auth/verify_request.dart';
+import '../../data/models/consultation/check_consultation_days_response.dart';
+import '../../data/models/consultation/doctors_response.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_request.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_response.dart';
 import '../../data/models/home/get_medical_history/get_medical_history_response.dart';
@@ -131,6 +133,12 @@ abstract class ApiClient {
     @Query('offset') int? offset,
   );
 
+  @POST('v1/object/get-list/doctor')
+  Future<DoctorsResponse> getDoctorsList(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
   @GET('v2/object-slim/get-list/selected_doctors')
   Future<FavouriteDoctorsResponse> getFavouriteDoctors(
     @Query('data') String request,
@@ -176,6 +184,12 @@ abstract class ApiClient {
   /// search
   @POST('v1/object/get-list/naznachenie')
   Future<SearchAppointmentsResponse> getSearchedAppointments(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
+  @POST('v1/object/get-list/doctor')
+  Future<DoctorsResponse> getSearchedDoctors(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
   );
@@ -313,6 +327,13 @@ abstract class ApiClient {
   Future<PaymentLinkResponse> getPaymentLink(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
+  );
+
+  /// Check consultation days Consultation page -> Specialists page
+  @GET('/v2/object-slim/get-list/{table_slug}')
+  Future<CheckConsultationDaysResponse> checkConsultationDays(
+    @Query('data') String request,
+    @Path('table_slug') String tableSlug,
   );
 
   /// Book Doctor

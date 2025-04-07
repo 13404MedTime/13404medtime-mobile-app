@@ -20,13 +20,7 @@ import 'domain/network/api_client.dart';
 import 'domain/repositories/add_medicine/add_medicine_repository.dart';
 import 'domain/repositories/auth/auth_repository.dart';
 import 'domain/repositories/consultation/consultation_repository.dart';
-import 'domain/repositories/doctor/doctor_main/doctor_advice/doctor_advice_repository.dart';
-import 'domain/repositories/doctor/doctor_main/doctor_home/add_free_time/add_free_time_repository.dart';
-import 'domain/repositories/doctor/doctor_main/doctor_home/doctor_home_repository.dart';
-import 'domain/repositories/doctor/login/doctor_login_repository.dart';
-import 'domain/repositories/health/health_repository_impl.dart';
 import 'domain/repositories/home/home_repository.dart';
-import 'domain/repositories/notification/notification_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
 import 'domain/repositories/register/register_repository.dart';
 import 'domain/repositories/register/register_repository_impl.dart';
@@ -38,13 +32,7 @@ import 'presentation/bloc/add_medicine/add_medicine_bloc.dart';
 import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import 'presentation/bloc/auth/register/register_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_advice/doctor_advice_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_time_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
-import 'presentation/bloc/doctor/login/login_bloc.dart';
+import 'presentation/bloc/consultation/consultation_bloc.dart';
 import 'presentation/bloc/main/home/home_bloc.dart';
 import 'presentation/bloc/main/main_bloc.dart';
 import 'presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
@@ -158,15 +146,9 @@ Future<void> init() async {
 
   homeFeature(baseClient);
 
-  healthFeature(baseClient);
-
   profileFeature(baseClient, baseClient);
 
   surveyFeature(baseClient);
-
-  notificationFeature(baseClient);
-
-  doctorFeature(baseClient, authClient);
 
   treatmentsFeature(baseClient);
 }
@@ -282,77 +264,17 @@ void profileFeature(ApiClient client, ApiClient baseClient) {
 }
 
 void consultationFeature(ApiClient client) {
-  sl.registerLazySingleton<ConsultationRepository>(
-    () => ConsultationRepositoryImpl(
-      apiClient: client,
-      networkInfo: sl(),
-      dio: sl(),
-    ),
-  );
-}
-
-void notificationFeature(ApiClient client) {
   sl
-    .registerLazySingleton<NotificationRepository>(
-      () => NotificationRepositoryImpl(
+    ..registerLazySingleton<ConsultationRepository>(
+      () => ConsultationRepositoryImpl(
         apiClient: client,
         networkInfo: sl(),
+        dio: sl(),
       ),
+    )
+    ..registerFactory<ConsultationBloc>(
+      () => ConsultationBloc(sl()),
     );
-}
-
-void doctorFeature(ApiClient client, ApiClient baseClient) {
-  sl
-    ..registerLazySingleton<DoctorLoginRepository>(
-      () => DoctorLoginRepositoryImpl(
-        apiClient: client,
-        baseClient: baseClient,
-        networkInfo: sl(),
-      ),
-    )
-    ..registerLazySingleton<DoctorHomeRepository>(
-      () => DoctorHomeRepositoryImpl(
-        apiClient: client,
-        baseClient: baseClient,
-        networkInfo: sl(),
-      ),
-    )
-    ..registerLazySingleton<AddFreeTimeRepository>(
-      () => AddFreeTimeRepositoryImpl(
-        apiClient: client,
-        baseClient: baseClient,
-        networkInfo: sl(),
-      ),
-    )
-    ..registerLazySingleton<DoctorAdviceRepository>(
-      () => DoctorAdviceRepositoryImpl(
-        apiClient: client,
-        baseClient: baseClient,
-        networkInfo: sl(),
-      ),
-    )
-    ..registerFactory<LoginBloc>(
-      () => LoginBloc(doctorLoginRepository: sl()),
-    )
-    ..registerFactory<DoctorHomeBloc>(
-      () => DoctorHomeBloc(sl()),
-    )
-    ..registerFactory<AddFreeTimeBloc>(
-      () => AddFreeTimeBloc(sl()),
-    )
-    ..registerFactory<DoctorAdviceBloc>(
-      () => DoctorAdviceBloc(sl()),
-    )
-    ..registerFactory<DoctorCheckBloc>(
-      () => DoctorCheckBloc(sl()),
-    )
-    ..registerFactory<DoctorCheckClientBloc>(
-      () => DoctorCheckClientBloc(sl()),
-    )
-    ..registerFactory<UpcomingVisitsBloc>(
-      () => UpcomingVisitsBloc(sl()),
-    )
-    ..registerFactory<DoctorMainBloc>(DoctorMainBloc.new);
 }
 
 Future<void> initHive() async {

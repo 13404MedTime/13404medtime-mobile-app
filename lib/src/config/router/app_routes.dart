@@ -11,6 +11,7 @@ import '../../presentation/bloc/add_medicine/add_medicine_bloc.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
+import '../../presentation/bloc/consultation/consultation_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_advice/doctor_advice_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_bloc.dart';
@@ -94,6 +95,7 @@ sealed class AppRoutes {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => sl<HomeBloc>()),
+              BlocProvider(create: (_) => sl<ConsultationBloc>()),
               BlocProvider(create: (_) => sl<TreatmentsBloc>()),
               BlocProvider<ProfileBloc>(
                 create: (_) => sl<ProfileBloc>()..add(const GetUpcomingVisitsEventProfile()),
