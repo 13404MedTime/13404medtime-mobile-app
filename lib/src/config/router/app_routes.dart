@@ -4,11 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/home/get_visits/doctor_booking_request_response.dart';
+import '../../data/models/my_appointments/switch_response.dart';
 import '../../data/source/local_source.dart';
 import '../../injector_container.dart';
+import '../../presentation/bloc/add_medicine/add_medicine_bloc.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_advice/doctor_advice_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_check/doctor_check_client/doctor_check_client_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_time_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
+import '../../presentation/bloc/doctor/login/login_bloc.dart';
 import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
 import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
@@ -17,14 +26,19 @@ import '../../presentation/bloc/main/profile/profile_edit/profile_edit_bloc.dart
 import '../../presentation/bloc/main/profile/upcoming_visits_bloc/upcoming_visits_bloc.dart';
 import '../../presentation/bloc/main/survey/survey_bloc.dart';
 import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
+import '../../presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import '../../presentation/bloc/my_visit/my_visit_bloc.dart';
+import '../../presentation/bloc/purpose/purpose_bloc.dart';
 import '../../presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import '../../presentation/bloc/splash/splash_bloc.dart';
+import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
 import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
+import '../../presentation/pages/main/home/medical_history/medical_history_page.dart';
+import '../../presentation/pages/main/home/my_appointments/my_appointments_page.dart';
 import '../../presentation/pages/main/home/my_visit/my_visit_page.dart';
 import '../../presentation/pages/main/home/my_visit/purpose/args/medication_description_args.dart';
 import '../../presentation/pages/main/home/my_visit/purpose/args/medication_files_args.dart';
@@ -149,6 +163,15 @@ sealed class AppRoutes {
             ),
           ),
         );
+      case Routes.myAppointments:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<MyAppointmentsBloc>(),
+            child: MyAppointmentsPage(
+              switchData: settings.arguments is SwitchModel ? settings.arguments! as SwitchModel : const SwitchModel(),
+            ),
+          ),
+        );
       case Routes.myVisit:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -163,6 +186,28 @@ sealed class AppRoutes {
               arguments: settings.arguments is MyVisitArgument ? settings.arguments! as MyVisitArgument : null,
             ),
           ),
+        );
+      case Routes.purposePage:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<PurposeBloc>(),
+            child: PurposePage(
+              args: settings.arguments is PurposePageArgs ? settings.arguments! as PurposePageArgs : null,
+            ),
+          ),
+        );
+      case Routes.subPurposePage:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SubPurposeBloc>(),
+            child: SubPurposePage(
+              args: settings.arguments is SubPurposePageArgs ? settings.arguments! as SubPurposePageArgs : null,
+            ),
+          ),
+        );
+      case Routes.medicalHistory:
+        return MaterialPageRoute(
+          builder: (_) => const MedicalHistoryPage(),
         );
       case Routes.survey:
         return MaterialPageRoute(
@@ -181,6 +226,13 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (_) => sl<ShowAllMyVisitsBloc>(),
             child: const ShowAllMyVisitsPage(),
+          ),
+        );
+      case Routes.addMedicine:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AddMedicineBloc>(),
+            child: const AddMedicinePage(),
           ),
         );
       case Routes.medicationDescription:

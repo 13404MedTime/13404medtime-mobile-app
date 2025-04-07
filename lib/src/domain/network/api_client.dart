@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../core/constants/constants.dart';
+import '../../data/models/add_medicine/get_drugs/get_drugs_response.dart';
+import '../../data/models/add_medicine/metrics/metrics_response.dart';
 import '../../data/models/auth/register/create_health_request.dart';
 import '../../data/models/auth/register/register_user_response.dart';
 import '../../data/models/auth/send_code_request.dart';
@@ -24,9 +26,12 @@ import '../../data/models/home/payment_types/payment_types_response.dart';
 import '../../data/models/home/subscription_types/subscription_details_response.dart';
 import '../../data/models/home/subscription_types/subscription_status_of_user_response.dart';
 import '../../data/models/home/subscription_types/subscription_types_response.dart';
+import '../../data/models/my_appointments/my_appointments_response.dart';
 import '../../data/models/profile/get_favourite_doctor/favourite_doctor_response.dart';
 import '../../data/models/profile/profile_edit_request.dart';
 import '../../data/models/profile/profile_response.dart';
+import '../../data/models/purpose/files_response.dart';
+import '../../data/models/purpose/medication_response.dart';
 import '../../data/models/search_model/search_appointments_response.dart';
 import '../../data/models/splash/check_for_production_response.dart';
 import '../../data/models/survey/get_analysis_survey/analysis_survey_request.dart';
@@ -91,6 +96,18 @@ abstract class ApiClient {
   Future<ProfileResponse> updateProfile(
     @Body() ProfileEditRequest request,
     @Query('project-id') String projectId,
+  );
+
+  @GET('v2/object-slim/get-list/patient_medication')
+  Future<MyAppointmentsResponse> getMyAppointments(
+    @Query('data') String request,
+    @Query('project_id') String projectId,
+  );
+
+  @PUT('v1/object/patient_medication')
+  Future<MyAppointmentsResponse> updateDrugStatus(
+    @Body() Map<String, dynamic> request,
+    @Query('project_id') String projectId,
   );
 
   @POST('v1/object/get-list/patient_visits')
@@ -163,6 +180,15 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
+  /// aaa
+  @GET('v1/object-slim/get-list/patient_medication')
+  Future<MedicationResponse> getMedicationSlim(
+    @Query('project-id') String projectId,
+    @Query('data') String data,
+    @Query('limit') int? limit,
+    @Query('offset') int? offset,
+  );
+
   // update user token and platformType
   @PUT('v1/object/cleints')
   Future<ProfileResponse> updateFcmTokenAndPlatformType(
@@ -220,6 +246,18 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
+  @POST('v1/object/get-list/unit_of_measure')
+  Future<Metrics> getMetrics(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
+  @POST('v1/object/medicine_taking')
+  Future<Metrics> saveMedication(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
   @GET('v2/object-slim/get-list/medicine_taking')
   Future<MedicineTakingResponse> getMedicineTaking(
     @Query('data') String request,
@@ -234,10 +272,22 @@ abstract class ApiClient {
     @Query('project-id') String projectId,
   );
 
+  @POST('v1/object/get-list/preparati')
+  Future<DrugsResponse> getDrugs(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+  );
+
   @DELETE('v1/object/medicine_taking/{medicine_id}')
   Future<dynamic> deleteMedicine(
     @Body() Map<String, dynamic> request,
     @Path('medicine_id') String medicineId,
+    @Query('project-id') String projectId,
+  );
+
+  @POST('v1/object/get-list/files')
+  Future<FilesResponse> getMedicineFiles(
+    @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
   );
 
@@ -271,7 +321,6 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> request,
     @Header('Authorization') String token,
   );
-
 
   /// Delete doctor free time
   @DELETE('/v2/items/doctor_booking/{timeId}')
