@@ -24,6 +24,11 @@ import '../../data/models/doctor/doctor_main/doctor_home/add_free_time_response.
 import '../../data/models/doctor/doctor_main/doctor_home/doctor_patient_response.dart';
 import '../../data/models/doctor/login/doctor_login_response.dart';
 import '../../data/models/doctor/login/one_login_response.dart';
+import '../../data/models/health/add_health_response.dart';
+import '../../data/models/health/arterial_pressure_response.dart';
+import '../../data/models/health/blood_sugar_response.dart';
+import '../../data/models/health/pedometer_response.dart';
+import '../../data/models/health/twn_response.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_request.dart';
 import '../../data/models/home/get_analysis_survey/analysis_survey_home_response.dart';
 import '../../data/models/home/get_medical_history/get_medical_history_response.dart';
@@ -174,6 +179,26 @@ abstract class ApiClient {
     @Query('data') String request,
   );
 
+  @POST('v2/items/walk/aggregation')
+  Future<PedometerResponse> getPedometer(
+    @Body() Map<String, dynamic> request,
+  );
+
+  @POST('v2/items/puls/aggregation')
+  Future<ArterialPressureResponse> getArterialPressure(
+    @Body() Map<String, dynamic> request,
+  );
+
+  @POST('v2/items/blood_sugar/aggregation')
+  Future<BloodSugarResponse> getBloodSugar(
+    @Body() Map<String, dynamic> request,
+  );
+
+  @POST('v2/items/imt/aggregation')
+  Future<TWHResponse> getTWH(
+    @Body() Map<String, dynamic> request,
+  );
+
   @POST('v1/object/get-list/client_files')
   Future<AnalysisSurveyHomeResponse> getAnalysisSurveyHome(
     @Body() AnalysisSurveyHomeRequest request,
@@ -187,6 +212,13 @@ abstract class ApiClient {
   @POST('v1/object/client_files')
   Future<UploadFileImageResponse> uploadFileImage(
     @Body() UploadFileImageRequest request,
+  );
+
+  @POST('v1/object/{table_slug}')
+  Future<HealthResponse> addHealth(
+    @Body() Map<String, dynamic> request,
+    @Query('project-id') String projectId,
+    @Path('table_slug') String tableSlug,
   );
 
   @GET('v2/object-slim/get-list/selected_doctors')

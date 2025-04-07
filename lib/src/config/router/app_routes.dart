@@ -20,6 +20,7 @@ import '../../presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add
 import '../../presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import '../../presentation/bloc/doctor/login/login_bloc.dart';
+import '../../presentation/bloc/health/health_bloc.dart';
 import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
 import '../../presentation/bloc/main/profile/favourite_doctor/favourite_doctor_bloc.dart';
@@ -48,6 +49,7 @@ import '../../presentation/pages/doctor/login/login_page.dart';
 import '../../presentation/pages/error/error_page.dart';
 import '../../presentation/pages/internet_connection/internet_connection_page.dart';
 import '../../presentation/pages/main/consultation/specialists/specialists_page.dart';
+import '../../presentation/pages/main/health/args/health_args.dart';
 import '../../presentation/pages/main/home/medical_history/medical_history_page.dart';
 import '../../presentation/pages/main/home/my_appointments/my_appointments_page.dart';
 import '../../presentation/pages/main/home/my_visit/my_visit_page.dart';
@@ -106,6 +108,7 @@ sealed class AppRoutes {
             providers: [
               BlocProvider(create: (_) => sl<HomeBloc>()),
               BlocProvider(create: (_) => sl<ConsultationBloc>()),
+              BlocProvider(create: (_) => sl<HealthBloc>()),
               BlocProvider(create: (_) => sl<TreatmentsBloc>()),
               BlocProvider<ProfileBloc>(
                 create: (_) => sl<ProfileBloc>()..add(const GetUpcomingVisitsEventProfile()),

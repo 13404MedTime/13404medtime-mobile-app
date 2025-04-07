@@ -24,6 +24,7 @@ import 'domain/repositories/doctor/doctor_main/doctor_advice/doctor_advice_repos
 import 'domain/repositories/doctor/doctor_main/doctor_home/add_free_time/add_free_time_repository.dart';
 import 'domain/repositories/doctor/doctor_main/doctor_home/doctor_home_repository.dart';
 import 'domain/repositories/doctor/login/doctor_login_repository.dart';
+import 'domain/repositories/health/health_repository_impl.dart';
 import 'domain/repositories/home/home_repository.dart';
 import 'domain/repositories/notification/notification_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
@@ -45,6 +46,7 @@ import 'presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_
 import 'presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import 'presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import 'presentation/bloc/doctor/login/login_bloc.dart';
+import 'presentation/bloc/health/health_bloc.dart';
 import 'presentation/bloc/main/home/home_bloc.dart';
 import 'presentation/bloc/main/main_bloc.dart';
 import 'presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
@@ -160,6 +162,8 @@ Future<void> init() async {
 
   homeFeature(baseClient);
 
+  healthFeature(baseClient);
+
   profileFeature(baseClient, baseClient);
 
   surveyFeature(baseClient);
@@ -234,6 +238,18 @@ void surveyFeature(ApiClient authClient) {
       () => SurveyRepositoryImpl(
         apiClient: authClient,
         networkInfo: sl(),
+      ),
+    );
+}
+
+void healthFeature(ApiClient authClient) {
+  sl
+    ..registerFactory<HealthBloc>(() => HealthBloc(sl()))
+    ..registerLazySingleton<HealthRepository>(
+      () => HealthRepositoryImpl(
+        apiClient: authClient,
+        networkInfo: sl(),
+        dio: sl(),
       ),
     );
 }

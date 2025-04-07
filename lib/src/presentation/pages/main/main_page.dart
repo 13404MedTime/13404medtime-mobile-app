@@ -7,11 +7,13 @@ import '../../../core/constants/constants.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/base_functions.dart';
+import '../../bloc/health/health_bloc.dart';
 import '../../bloc/main/home/home_bloc.dart';
 import '../../bloc/main/main_bloc.dart';
 import '../../bloc/main/profile/profile_bloc.dart';
 import '../../bloc/main/treatments/treatments_bloc.dart';
 import 'consultation/consultation_page.dart';
+import 'health/health_page.dart';
 import 'home/home_page.dart';
 import 'profile/profile_page.dart';
 import 'treatments/treatments_page.dart';
@@ -43,7 +45,7 @@ class _MainPageState extends State<MainPage> with MainMixin {
               children: const [
                 HomePage(),
                 ConsultationPage(),
-                SizedBox(),
+                HealthPage(),
                 TreatmentsPage(),
                 ProfilePage(),
               ],
@@ -52,6 +54,7 @@ class _MainPageState extends State<MainPage> with MainMixin {
               currentIndex: state.bottomMenu.index,
               onTap: (i) async {
                 context.read<MainBloc>().add(MainEventChanged(BottomMenu.values[i]));
+                context.read<HealthBloc>().add(const GetPedometerEvent());
                 String tag = FirebaseAnalyticsEvents.mainViewNavigationBtn;
                 switch (i) {
                   case 0:
@@ -70,6 +73,12 @@ class _MainPageState extends State<MainPage> with MainMixin {
                   case 1:
                     tag = FirebaseAnalyticsEvents.consultationNavigationBtn;
                   case 2:
+                    context.read<HealthBloc>()
+                      ..add(const GetStepsCountOfTodayEvent())
+                      ..add(const GetArterialPressureEvent())
+                      ..add(const GetBloodSugarEvent())
+                      ..add(const GetTWHEvent())
+                      ..add(const GetPedometerEvent());
                     tag = FirebaseAnalyticsEvents.healthNavigationBtn;
                   case 3:
                     context.read<TreatmentsBloc>().add(const GetMedicineTakingMenuEvent());
