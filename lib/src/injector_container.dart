@@ -22,6 +22,7 @@ import 'domain/repositories/auth/auth_repository.dart';
 import 'domain/repositories/consultation/consultation_repository.dart';
 import 'domain/repositories/doctor/login/doctor_login_repository.dart';
 import 'domain/repositories/home/home_repository.dart';
+import 'domain/repositories/notification/notification_repository.dart';
 import 'domain/repositories/profile/profile_repository.dart';
 import 'domain/repositories/register/register_repository.dart';
 import 'domain/repositories/register/register_repository_impl.dart';
@@ -34,7 +35,6 @@ import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import 'presentation/bloc/auth/register/register_bloc.dart';
 import 'presentation/bloc/consultation/consultation_bloc.dart';
-import 'presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import 'presentation/bloc/doctor/login/login_bloc.dart';
 import 'presentation/bloc/main/home/home_bloc.dart';
 import 'presentation/bloc/main/main_bloc.dart';
@@ -47,6 +47,7 @@ import 'presentation/bloc/main/survey/survey_bloc.dart';
 import 'presentation/bloc/main/treatments/treatments_bloc.dart';
 import 'presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import 'presentation/bloc/my_visit/my_visit_bloc.dart';
+import 'presentation/bloc/notification/notification_bloc.dart';
 import 'presentation/bloc/purpose/purpose_bloc.dart';
 import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import 'presentation/bloc/specialists/specialists_bloc.dart';
@@ -150,9 +151,13 @@ Future<void> init() async {
 
   homeFeature(baseClient);
 
+  healthFeature(baseClient);
+
   profileFeature(baseClient, baseClient);
 
   surveyFeature(baseClient);
+
+  notificationFeature(baseClient);
 
   doctorFeature(baseClient, authClient);
 
@@ -286,6 +291,19 @@ void consultationFeature(ApiClient client) {
     );
 }
 
+void notificationFeature(ApiClient client) {
+  sl
+    ..registerLazySingleton<NotificationRepository>(
+      () => NotificationRepositoryImpl(
+        apiClient: client,
+        networkInfo: sl(),
+      ),
+    )
+    ..registerFactory<NotificationBloc>(
+      () => NotificationBloc(sl()),
+    );
+}
+
 void doctorFeature(ApiClient client, ApiClient baseClient) {
   sl
     ..registerLazySingleton<DoctorLoginRepository>(
@@ -300,8 +318,7 @@ void doctorFeature(ApiClient client, ApiClient baseClient) {
     )
     ..registerFactory<UpcomingVisitsBloc>(
       () => UpcomingVisitsBloc(sl()),
-    )
-    ..registerFactory<DoctorMainBloc>(DoctorMainBloc.new);
+    );
 }
 
 Future<void> initHive() async {

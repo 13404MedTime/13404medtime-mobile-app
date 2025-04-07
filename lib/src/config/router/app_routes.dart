@@ -12,7 +12,6 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
-import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import '../../presentation/bloc/doctor/login/login_bloc.dart';
 import '../../presentation/bloc/main/home/home_bloc.dart';
 import '../../presentation/bloc/main/profile/disease_history_bloc/disease_history_bloc.dart';
@@ -24,6 +23,7 @@ import '../../presentation/bloc/main/survey/survey_bloc.dart';
 import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
 import '../../presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import '../../presentation/bloc/my_visit/my_visit_bloc.dart';
+import '../../presentation/bloc/notification/notification_bloc.dart';
 import '../../presentation/bloc/purpose/purpose_bloc.dart';
 import '../../presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import '../../presentation/bloc/specialists/specialists_bloc.dart';
@@ -235,6 +235,15 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (_) => sl<ShowAllMyVisitsBloc>(),
             child: const ShowAllMyVisitsPage(),
+          ),
+        );
+      case Routes.notifications:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<NotificationBloc>(),
+            child: NotificationPage(
+              bloc: settings.arguments! as HomeBloc,
+            ),
           ),
         );
       case Routes.addMedicine:

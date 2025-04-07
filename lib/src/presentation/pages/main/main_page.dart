@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../config/router/app_routes.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/base_functions.dart';
-import '../../../core/utils/google_sign_in.dart';
 import '../../bloc/health/health_bloc.dart';
 import '../../bloc/main/home/home_bloc.dart';
 import '../../bloc/main/main_bloc.dart';
 import '../../bloc/main/profile/profile_bloc.dart';
 import '../../bloc/main/treatments/treatments_bloc.dart';
 import 'consultation/consultation_page.dart';
-import 'health/health_page.dart';
 import 'home/home_page.dart';
 import 'profile/profile_page.dart';
 import 'treatments/treatments_page.dart';
@@ -47,7 +44,7 @@ class _MainPageState extends State<MainPage> with MainMixin {
               children: const [
                 HomePage(),
                 ConsultationPage(),
-                HealthPage(),
+                SizedBox(),
                 TreatmentsPage(),
                 ProfilePage(),
               ],
