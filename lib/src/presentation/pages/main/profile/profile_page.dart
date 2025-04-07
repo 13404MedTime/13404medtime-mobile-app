@@ -276,10 +276,12 @@ class _ProfilePageState extends State<ProfilePage> with ProfileMixin {
                                       if (value) {
                                         context.read<HomeBloc>().add(const LogoutAccountEvent());
                                         localSource.setHasProfile(false);
+                                        final locale = localSource.locale;
                                         // await localSource.clearProfile();
                                         // await localSource
                                         //     .deleteTelegramUserName();
                                         await localSource.clear();
+                                        await localSource.setLocale(locale);
                                         cancelAllNotifications();
                                         await sendAnalyticsEvent(
                                             tag: FirebaseAnalyticsEvents.logOutBtn,

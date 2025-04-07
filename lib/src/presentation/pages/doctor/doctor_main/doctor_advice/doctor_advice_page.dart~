@@ -343,9 +343,9 @@ class _DoctorAdvicePageState extends State<DoctorAdvicePage> with DoctorAdvicePa
                     void addMedicine() {
                       final List<String> time = [];
                       for (int i = 0; i < times.length - 1; i++) {
-                        time.add('"${times[i].hour}:${times[i].minute}:00"');
+                        time.add('"${times[i].hour.toString().padLeft(2, '0')}:${times[i].minute.toString().padLeft(2, '0')}:00"');
                       }
-                      time.add('"${times.last.hour}:${times.last.minute}:00"');
+                      time.add('"${times.last.hour.toString().padLeft(2, '0')}:${times.last.minute.toString().padLeft(2, '0')}:00"');
                       context.read<DoctorAdviceBloc>().add(
                             AddMedicine$DoctorAdviceEvent(
                               MedicineInformation(

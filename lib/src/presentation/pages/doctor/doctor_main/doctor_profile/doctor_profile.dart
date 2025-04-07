@@ -103,7 +103,9 @@ class DoctorProfile extends StatelessWidget {
                   if (value != null) {
                     if (value) {
                       localSource.setHasProfile(false);
+                      final locale = localSource.locale;
                       await localSource.clear();
+                      await localSource.setLocale(locale);
                       cancelAllNotifications();
                       if (context.mounted) {
                         unawaited(Navigator.pushNamedAndRemoveUntil(context, Routes.auth, (route) => false));
