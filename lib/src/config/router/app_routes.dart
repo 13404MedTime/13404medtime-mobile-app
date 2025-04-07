@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/doctor/doctor_main/doctor_home/doctor_patient_response.dart';
 import '../../data/models/home/get_visits/doctor_booking_request_response.dart';
 import '../../data/models/my_appointments/switch_response.dart';
 import '../../data/source/local_source.dart';
@@ -12,6 +13,7 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/auth/confirm/confirm_code_bloc.dart';
 import '../../presentation/bloc/auth/register/register_bloc.dart';
 import '../../presentation/bloc/consultation/consultation_bloc.dart';
+import '../../presentation/bloc/doctor/doctor_main/doctor_home/add_free_time/add_free_time_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_home/doctor_home_bloc.dart';
 import '../../presentation/bloc/doctor/doctor_main/doctor_main_bloc.dart';
 import '../../presentation/bloc/doctor/login/login_bloc.dart';
@@ -34,6 +36,9 @@ import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
+import '../../presentation/pages/doctor/doctor_main/doctor_home/add_free_time/add_free_time.dart';
+import '../../presentation/pages/doctor/doctor_main/doctor_home/doctor_home_page.dart';
+import '../../presentation/pages/doctor/doctor_main/doctor_home/doctor_requests/doctor_requests_page.dart';
 import '../../presentation/pages/doctor/doctor_main/doctor_main_page.dart';
 import '../../presentation/pages/doctor/login/login_page.dart';
 import '../../presentation/pages/error/error_page.dart';
@@ -288,6 +293,27 @@ sealed class AppRoutes {
               ),
             ],
             child: const DoctorMainPage(),
+          ),
+        );
+      case Routes.addFreeTime:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<AddFreeTimeBloc>()),
+              BlocProvider(
+                  create: (context) => sl<DoctorHomeBloc>()
+                    ..add(const GetPatients$DoctorHomeEvent())
+                    ..add(const GetDoctorBookingRequests$DoctorHomeEvent())),
+            ],
+            child: AddFreeTime(id: settings.arguments as DoctorBooking?),
+          ),
+        );
+      case Routes.doctorRequests:
+        return MaterialPageRoute(
+          builder: (context) => DoctorRequestsPage(
+            bookingResponse: (settings.arguments! as DoctorRequestArguments).bookingResponse,
+            reject: (settings.arguments! as DoctorRequestArguments).reject,
+            accept: (settings.arguments! as DoctorRequestArguments).accept,
           ),
         );
       case Routes.upcomingVisits:

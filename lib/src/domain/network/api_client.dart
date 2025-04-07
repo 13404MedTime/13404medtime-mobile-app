@@ -11,6 +11,7 @@ import '../../data/models/auth/send_code_response.dart';
 import '../../data/models/auth/verify_request.dart';
 import '../../data/models/consultation/check_consultation_days_response.dart';
 import '../../data/models/consultation/doctors_response.dart';
+import '../../data/models/doctor/doctor_main/doctor_home/add_free_time_response.dart';
 import '../../data/models/doctor/doctor_main/doctor_home/doctor_patient_response.dart';
 import '../../data/models/doctor/login/doctor_login_response.dart';
 import '../../data/models/doctor/login/one_login_response.dart';
@@ -360,6 +361,13 @@ abstract class ApiClient {
   Future<DoctorLoginResponse> doctorLogin(
     @Body() Map<String, dynamic> request,
     @Query('project-id') String projectId,
+  );
+
+  /// Add Doctor Free Time
+  @POST('/v2/items/doctor_booking')
+  Future<AddFreeTimeResponse> addFreeTime(
+    @Body() Map<String, dynamic> request,
+    @Header('Authorization') String token,
   );
 
   /// Get doctor bookings
