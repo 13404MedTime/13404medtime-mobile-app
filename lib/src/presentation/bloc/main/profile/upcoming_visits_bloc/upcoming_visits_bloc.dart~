@@ -10,14 +10,11 @@ import '../../../../../domain/repositories/home/home_repository.dart';
 part 'upcoming_visits_event.dart';
 part 'upcoming_visits_state.dart';
 
-class UpcomingVisitsBloc
-    extends Bloc<UpcomingVisitsEvent, UpcomingVisitsState> {
+class UpcomingVisitsBloc extends Bloc<UpcomingVisitsEvent, UpcomingVisitsState> {
   UpcomingVisitsBloc(this.homeRepository) : super(const UpcomingVisitsState()) {
     on<UpcomingVisitsEvent>((event, emit) => switch (event) {
-          GetDoctorRequests$UpcomingVisitsEvent _ =>
-            _onGetDoctorRequests(event, emit),
-          ChangeSelected$UpcomingVisitsEvent _ =>
-            _onChangeSelected(event, emit),
+          GetDoctorRequests$UpcomingVisitsEvent _ => _onGetDoctorRequests(event, emit),
+          ChangeSelected$UpcomingVisitsEvent _ => _onChangeSelected(event, emit),
         });
   }
 
@@ -54,14 +51,11 @@ class UpcomingVisitsBloc
     final map = <String, List<BookingResponse>>{};
     for (final i in result.right.data.data.response) {
       final date = DateTime.parse(i.doctorBookingIdData.date);
-      final key = DateFormat('dd MMMM yyyy')
-          .format(date.subtract(const Duration(days: 1)));
-      if (i.status.first.toLowerCase() != 'approved' &&
-          DateTime.parse(i.doctorBookingIdData.date).isAfter(DateTime.now())) {
+      final key = DateFormat('dd MMMM yyyy').format(date);
+      if (i.status.first.toLowerCase() != 'approved' && DateTime.parse(i.doctorBookingIdData.date).isAfter(DateTime.now())) {
         if (map.containsKey(key)) {
-          final list = [...map[key]!, i]..sort((a, b) => a
-              .doctorBookingIdData.fromTime
-              .compareTo(b.doctorBookingIdData.fromTime));
+          final list = [...map[key]!, i]
+            ..sort((a, b) => a.doctorBookingIdData.fromTime.compareTo(b.doctorBookingIdData.fromTime));
           map[key] = list;
         } else {
           map[key] = [i];
@@ -70,8 +64,7 @@ class UpcomingVisitsBloc
     }
     final map2 = <String, List<DoctorBooking>>{};
     for (final i in bookings.right.data.data.response) {
-      final key = DateFormat('dd MMMM yyyy')
-          .format(i.date.subtract(const Duration(days: 1)));
+      final key = DateFormat('dd MMMM yyyy').format(i.date);
       if (i.isBooked && i.date.isAfter(DateTime.now())) {
         if (map2.containsKey(key)) {
           map2[key] = [...map2[key]!, i];
@@ -85,8 +78,7 @@ class UpcomingVisitsBloc
       bookings: Map.fromEntries(
         map.entries.toList()
           ..sort(
-            (a, b) => a.value.first.doctorBookingIdData.date
-                .compareTo(b.value.first.doctorBookingIdData.date),
+            (a, b) => a.value.first.doctorBookingIdData.date.compareTo(b.value.first.doctorBookingIdData.date),
           ),
       ),
       doctorBookings: Map.fromEntries(
