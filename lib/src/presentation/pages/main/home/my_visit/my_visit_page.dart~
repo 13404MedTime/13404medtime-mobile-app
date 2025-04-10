@@ -274,6 +274,15 @@ class _MyVisitPageState extends State<MyVisitPage>
                                               in state.selectedBookings)
                                             InkWell(
                                               onTap: () {
+                                                debugPrint(state
+                                                    .bookingRequests
+                                                    .first
+                                                    .doctorBookingIdData
+                                                    .date);
+                                                debugPrint(i.date
+                                                    .subtract(
+                                                        const Duration(days: 1))
+                                                    .toIso8601String());
                                                 if (!i.isBooked &&
                                                     !state.bookingRequests.any((e) =>
                                                         e.doctorBookingIdData

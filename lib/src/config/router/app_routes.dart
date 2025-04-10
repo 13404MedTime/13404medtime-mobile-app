@@ -32,11 +32,13 @@ import '../../presentation/bloc/main/treatments/treatments_bloc.dart';
 import '../../presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import '../../presentation/bloc/my_visit/my_visit_bloc.dart';
 import '../../presentation/bloc/notification/notification_bloc.dart';
+import '../../presentation/bloc/payment_methods/payment_methods_bloc.dart';
 import '../../presentation/bloc/purpose/purpose_bloc.dart';
 import '../../presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import '../../presentation/bloc/specialists/specialists_bloc.dart';
 import '../../presentation/bloc/splash/splash_bloc.dart';
 import '../../presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
+import '../../presentation/bloc/subscription/subscription_bloc.dart';
 import '../../presentation/pages/auth/auth_page.dart';
 import '../../presentation/pages/auth/confirm/confirm_code_page.dart';
 import '../../presentation/pages/auth/register/register_page.dart';
@@ -74,6 +76,8 @@ import '../../presentation/pages/main/profile/selected_doctors/selected_doctors_
 import '../../presentation/pages/main/profile/settings/settings_page.dart';
 import '../../presentation/pages/main/profile/upcoming_visits/upcoming_visits_page.dart';
 import '../../presentation/pages/main/profile/upcoming_visits/view_rejected_request.dart';
+import '../../presentation/pages/main/subscription/payment_method/payment_methods_page.dart';
+import '../../presentation/pages/main/subscription/subscription_page.dart';
 import '../../presentation/pages/main/treatments/add_medicine/add_medicine_page.dart';
 import '../../presentation/pages/select_lang/select_lang_page.dart';
 import '../../presentation/pages/splash/splash_page.dart';
@@ -82,7 +86,8 @@ import 'routes_arguments.dart';
 part 'name_routes.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 final localSource = sl<LocalSource>();
 
@@ -112,7 +117,8 @@ sealed class AppRoutes {
               BlocProvider(create: (_) => sl<HealthBloc>()),
               BlocProvider(create: (_) => sl<TreatmentsBloc>()),
               BlocProvider<ProfileBloc>(
-                create: (_) => sl<ProfileBloc>()..add(const GetUpcomingVisitsEventProfile()),
+                create: (_) => sl<ProfileBloc>()
+                  ..add(const GetUpcomingVisitsEventProfile()),
               ),
             ],
             child: const MainPage(),
@@ -146,7 +152,9 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (_) => sl<RegisterBloc>(),
             child: RegisterPage(
-              phone: settings.arguments is String ? settings.arguments! as String : '',
+              phone: settings.arguments is String
+                  ? settings.arguments! as String
+                  : '',
             ),
           ),
         );
@@ -164,7 +172,8 @@ sealed class AppRoutes {
       case Routes.selectedDoctors:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<FavouriteDoctorBloc>()..add(const GetFavouriteDoctorEvent()),
+            create: (context) =>
+                sl<FavouriteDoctorBloc>()..add(const GetFavouriteDoctorEvent()),
             child: const SelectedDoctorsPage(),
           ),
         );
@@ -184,7 +193,9 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (_) => sl<MyAppointmentsBloc>(),
             child: MyAppointmentsPage(
-              switchData: settings.arguments is SwitchModel ? settings.arguments! as SwitchModel : const SwitchModel(),
+              switchData: settings.arguments is SwitchModel
+                  ? settings.arguments! as SwitchModel
+                  : const SwitchModel(),
             ),
           ),
         );
@@ -194,12 +205,36 @@ sealed class AppRoutes {
             create: (context) => sl<MyVisitBloc>()
               ..add(
                 GetDoctorFreeTimeEvent(
-                    guid:
-                        settings.arguments != null ? (settings.arguments! as MyVisitArgument).doctor?.guid ?? '' : ''),
+                  guid: settings.arguments != null
+                      ? (settings.arguments! as MyVisitArgument).doctor?.guid ??
+                          ''
+                      : '',
+                  date: DateTime.now(),
+                ),
               )
               ..add(const GetDoctorBookingRequestsEvent()),
             child: MyVisitPage(
-              arguments: settings.arguments is MyVisitArgument ? settings.arguments! as MyVisitArgument : null,
+              arguments: settings.arguments is MyVisitArgument
+                  ? settings.arguments! as MyVisitArgument
+                  : null,
+            ),
+          ),
+        );
+      case Routes.subscription:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<SubscriptionBloc>(),
+            child: const SubscriptionPage(),
+          ),
+        );
+      case Routes.paymentMethods:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<PaymentMethodsBloc>(),
+            child: PaymentMethodsPage(
+              subscription: settings.arguments is PaymentMethodsPageArgument
+                  ? (settings.arguments! as PaymentMethodsPageArgument)
+                  : null,
             ),
           ),
         );
@@ -208,7 +243,9 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (context) => sl<PurposeBloc>(),
             child: PurposePage(
-              args: settings.arguments is PurposePageArgs ? settings.arguments! as PurposePageArgs : null,
+              args: settings.arguments is PurposePageArgs
+                  ? settings.arguments! as PurposePageArgs
+                  : null,
             ),
           ),
         );
@@ -217,7 +254,9 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (context) => sl<SubPurposeBloc>(),
             child: SubPurposePage(
-              args: settings.arguments is SubPurposePageArgs ? settings.arguments! as SubPurposePageArgs : null,
+              args: settings.arguments is SubPurposePageArgs
+                  ? settings.arguments! as SubPurposePageArgs
+                  : null,
             ),
           ),
         );
@@ -230,7 +269,9 @@ sealed class AppRoutes {
           builder: (_) => BlocProvider(
             create: (_) => sl<SpecialistsBloc>(),
             child: SpecialistsPage(
-                args: settings.arguments is SpecialistsPageArgs ? settings.arguments! as SpecialistsPageArgs : null),
+                args: settings.arguments is SpecialistsPageArgs
+                    ? settings.arguments! as SpecialistsPageArgs
+                    : null),
           ),
         );
       case Routes.survey:
@@ -243,7 +284,8 @@ sealed class AppRoutes {
 
       case Routes.photoView:
         return MaterialPageRoute(
-          builder: (_) => PhotoViewPage(imageUrl: settings.arguments! as String),
+          builder: (_) =>
+              PhotoViewPage(imageUrl: settings.arguments! as String),
         );
       case Routes.subHealth:
         return MaterialPageRoute(
@@ -285,7 +327,9 @@ sealed class AppRoutes {
       case Routes.medicationFiles:
         return MaterialPageRoute(
           builder: (_) => MedicationFilesPage(
-            args: settings.arguments is MedicationFilesArgs ? settings.arguments! as MedicationFilesArgs : null,
+            args: settings.arguments is MedicationFilesArgs
+                ? settings.arguments! as MedicationFilesArgs
+                : null,
           ),
         );
       case Routes.login:
@@ -306,10 +350,12 @@ sealed class AppRoutes {
                   ..add(const GetDoctorBookingRequests$DoctorHomeEvent()),
               ),
               BlocProvider(
-                create: (context) => sl<DoctorAdviceBloc>()..add(const GetAllMedicines$DoctorAdviceEvent('')),
+                create: (context) => sl<DoctorAdviceBloc>()
+                  ..add(const GetAllMedicines$DoctorAdviceEvent('')),
               ),
               BlocProvider(
-                create: (context) => sl<DoctorCheckBloc>()..add(const GetDoctorAppointments$DoctorCheckEvent()),
+                create: (context) => sl<DoctorCheckBloc>()
+                  ..add(const GetDoctorAppointments$DoctorCheckEvent()),
               ),
             ],
             child: const DoctorMainPage(),
@@ -336,7 +382,9 @@ sealed class AppRoutes {
                 GetMedicineInfo$DoctorCheckClientEvent(
                   guid: (settings.arguments! as List<String>).first,
                   endDate: DateTime.now().toIso8601String(),
-                  startDate: DateTime.now().subtract(const Duration(days: 7)).toIso8601String(),
+                  startDate: DateTime.now()
+                      .subtract(const Duration(days: 7))
+                      .toIso8601String(),
                 ),
               ),
             child: DoctorCheckClientPage(
@@ -348,7 +396,8 @@ sealed class AppRoutes {
       case Routes.doctorRequests:
         return MaterialPageRoute(
           builder: (context) => DoctorRequestsPage(
-            bookingResponse: (settings.arguments! as DoctorRequestArguments).bookingResponse,
+            bookingResponse:
+                (settings.arguments! as DoctorRequestArguments).bookingResponse,
             reject: (settings.arguments! as DoctorRequestArguments).reject,
             accept: (settings.arguments! as DoctorRequestArguments).accept,
           ),

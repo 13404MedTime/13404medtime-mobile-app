@@ -129,7 +129,7 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
       (r) {
         debugPrint('MYLISTS: ${r.data.data.response
             .where((e) => e.status.first.toLowerCase() == 'pending' && !e.doctorBookingIdData.isBooked)
-            .toList()}');
+            .toList();
         emit(state.copyWith(
             requests: r.data.data.response,
             filteredRequests: r.data.data.response

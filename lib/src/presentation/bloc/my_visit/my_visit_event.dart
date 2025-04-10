@@ -8,7 +8,7 @@ class MyVisitEvent with _$MyVisitEvent {
 
   const factory MyVisitEvent.checkConsultationDays() = CheckConsultationDaysEvent;
 
-  const factory MyVisitEvent.getDoctorFreeTime({required String guid}) = GetDoctorFreeTimeEvent;
+  const factory MyVisitEvent.getDoctorFreeTime({required String guid, required DateTime date}) = GetDoctorFreeTimeEvent;
   const factory MyVisitEvent.getSelectedDate({required DateTime selectedDate}) = GetSelectedDateEvent;
   const factory MyVisitEvent.selectFreeTime({required DoctorBooking freeTime}) = SelectFreeTime;
   const factory MyVisitEvent.bookDoctor({

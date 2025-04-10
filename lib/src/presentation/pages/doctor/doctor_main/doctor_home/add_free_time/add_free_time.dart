@@ -28,7 +28,9 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
           backgroundColor: context.theme.colorScheme.background,
           surfaceTintColor: context.theme.colorScheme.background,
           title: Text(
-            widget.id != null ? context.translate('change') : context.translate('add_free_time'),
+            widget.id != null
+                ? context.translate('change')
+                : context.translate('add_free_time'),
           ),
           centerTitle: true,
           actions: [
@@ -38,17 +40,23 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                   await customYesNoDialog<Object?>(
                     context: context,
                     title: context.translate('are_you_want_remove_free_time'),
-                    content: context.translate('are_you_want_remove_free_time_body'),
+                    content:
+                        context.translate('are_you_want_remove_free_time_body'),
                     acceptOnTap: () {
-                      if(context.read<DoctorHomeBloc>().state.requests.any((e) => e.doctorBookingIdData.guid == widget.id?.guid)){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(context.translate('you_cant_remove_free_time')),
-                          backgroundColor: context.theme.colorScheme.error,
-                        ),
-                      );
-                      }else{
-                        context.read<DoctorHomeBloc>().add(DeleteDoctorFreeTime$DoctorHomeEvent(timeId: widget.id!.guid));
+                      if (context.read<DoctorHomeBloc>().state.requests.any(
+                          (e) =>
+                              e.doctorBookingIdData.guid == widget.id?.guid)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                context.translate('you_cant_remove_free_time')),
+                            backgroundColor: context.theme.colorScheme.error,
+                          ),
+                        );
+                      } else {
+                        context.read<DoctorHomeBloc>().add(
+                            DeleteDoctorFreeTime$DoctorHomeEvent(
+                                timeId: widget.id!.guid));
                       }
                       Navigator.pop(context);
                     },
@@ -85,7 +93,8 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                       borderSide: BorderSide.none,
                       borderRadius: AppUtils.kBorderRadius10,
                     ),
-                    hintStyle: TextStyle(color: context.colorScheme.onBackground),
+                    hintStyle:
+                        TextStyle(color: context.colorScheme.onBackground),
                     contentPadding: AppUtils.kPaddingAll16,
                     filled: true,
                     fillColor: context.color.disabledCard,
@@ -101,7 +110,8 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                 ),
                 AppUtils.kBoxHeight12,
                 InkWell(
-                  overlayColor: const MaterialStatePropertyAll(Colors.transparent),
+                  overlayColor:
+                      const MaterialStatePropertyAll(Colors.transparent),
                   onTap: () async {
                     final date = await showDatePicker(
                       context: context,
@@ -109,10 +119,12 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                       lastDate: DateTime(2100),
                     );
                     if (date?.day != null && date!.day >= DateTime.now().day) {
-                      dateTimeController.text = DateFormat('dd/MM/yyyy').format(date);
+                      dateTimeController.text =
+                          DateFormat('dd/MM/yyyy').format(date);
                       dateTime = date;
                     } else {
-                      dateTimeController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
+                      dateTimeController.text =
+                          DateFormat('dd/MM/yyyy').format(DateTime.now());
                       dateTime = DateTime.now();
                     }
                     setState(() {});
@@ -162,7 +174,8 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                           ),
                           child: TextField(
                             controller: startTimeController,
-                            style: TextStyle(color: context.colorScheme.onBackground),
+                            style: TextStyle(
+                                color: context.colorScheme.onBackground),
                             decoration: InputDecoration(
                               hintText: context.translate('from'),
                               disabledBorder: const OutlineInputBorder(
@@ -193,10 +206,12 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                             }
                             setState(() {});
                           },
-                          overlayColor: const MaterialStatePropertyAll(Colors.transparent),
+                          overlayColor: const MaterialStatePropertyAll(
+                              Colors.transparent),
                           child: TextField(
                             controller: endTimeController,
-                            style: TextStyle(color: context.colorScheme.onBackground),
+                            style: TextStyle(
+                                color: context.colorScheme.onBackground),
                             decoration: InputDecoration(
                               hintText: context.translate('to'),
                               disabledBorder: const OutlineInputBorder(
@@ -231,15 +246,20 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                 ),
               ),
               onPressed: () {
-                if (!state.isLoadingAdd && !context.read<AddFreeTimeBloc>().state.isLoading) {
+                if (!state.isLoadingAdd &&
+                    !context.read<AddFreeTimeBloc>().state.isLoading) {
                   if (dateTimeController.text.isNotEmpty &&
                       startTimeController.text.isNotEmpty &&
                       endTimeController.text.isNotEmpty) {
-                    if (int.parse(startTimeController.text.replaceAll(':', '')) <
+                    if (int.parse(
+                            startTimeController.text.replaceAll(':', '')) <
                         int.parse(endTimeController.text.replaceAll(':', ''))) {
                       if (widget.id != null) {
-                        if (dateTime.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch) {
-                          context.read<DoctorHomeBloc>().add(const AddTimeLoading$DoctorHomeEvent());
+                        if (dateTime.millisecondsSinceEpoch >
+                            DateTime.now().millisecondsSinceEpoch) {
+                          context
+                              .read<DoctorHomeBloc>()
+                              .add(const AddTimeLoading$DoctorHomeEvent());
                           context.read<AddFreeTimeBloc>().add(
                                 UpdateTime$AddFreeTimeEvent(
                                   context: context,
@@ -262,13 +282,19 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                         }
                       } else {
                         var isFree = true;
-                        final start = int.parse(startTimeController.text.replaceAll(':', ''));
-                        final end = int.parse(endTimeController.text.replaceAll(':', ''));
-                        for (final i in state.bookings.where((e) => e.date.day - 1 == dateTime.day)) {
-                          final startBooked = int.parse(i.fromTime.replaceAll(':', ''));
-                          final endBooked = int.parse(i.toTime.replaceAll(':', ''));
+                        final start = int.parse(
+                            startTimeController.text.replaceAll(':', ''));
+                        final end = int.parse(
+                            endTimeController.text.replaceAll(':', ''));
+                        for (final i in state.bookings
+                            .where((e) => e.date.day - 1 == dateTime.day)) {
+                          final startBooked =
+                              int.parse(i.fromTime.replaceAll(':', ''));
+                          final endBooked =
+                              int.parse(i.toTime.replaceAll(':', ''));
                           if ((startBooked <= start && start <= endBooked) ||
-                              (startBooked <= end && end <= endBooked)) {
+                              (startBooked <= end && end <= endBooked) ||
+                              (start <= startBooked && end >= endBooked)) {
                             isFree = false;
                           }
                         }

@@ -59,11 +59,13 @@ import 'presentation/bloc/main/treatments/treatments_bloc.dart';
 import 'presentation/bloc/my_appointments/my_appointments_bloc.dart';
 import 'presentation/bloc/my_visit/my_visit_bloc.dart';
 import 'presentation/bloc/notification/notification_bloc.dart';
+import 'presentation/bloc/payment_methods/payment_methods_bloc.dart';
 import 'presentation/bloc/purpose/purpose_bloc.dart';
 import 'presentation/bloc/show_all_my_visits/show_all_my_visits_bloc.dart';
 import 'presentation/bloc/specialists/specialists_bloc.dart';
 import 'presentation/bloc/splash/splash_bloc.dart';
 import 'presentation/bloc/sub_purpose/sub_purpose_bloc.dart';
+import 'presentation/bloc/subscription/subscription_bloc.dart';
 
 final sl = GetIt.instance;
 late Box<dynamic> _box;
@@ -103,7 +105,7 @@ Future<void> init() async {
               }
             },
           ),
-          // chuck.getDioInterceptor(),
+          chuck.getDioInterceptor(),
         ],
       ),
   );
@@ -214,6 +216,8 @@ void homeFeature(ApiClient authClient) {
     ..registerFactory<MyAppointmentsBloc>(() => MyAppointmentsBloc(sl()))
     ..registerFactory<ShowAllMyVisitsBloc>(() => ShowAllMyVisitsBloc(sl()))
     ..registerFactory<MyVisitBloc>(() => MyVisitBloc(sl()))
+    ..registerFactory<SubscriptionBloc>(() => SubscriptionBloc(sl()))
+    ..registerFactory<PaymentMethodsBloc>(() => PaymentMethodsBloc(sl()))
     ..registerFactory<PurposeBloc>(() => PurposeBloc(sl()))
     ..registerFactory<SubPurposeBloc>(() => SubPurposeBloc(sl()))
     ..registerFactory<DiseaseHistoryBloc>(() => DiseaseHistoryBloc(sl(), sl()))

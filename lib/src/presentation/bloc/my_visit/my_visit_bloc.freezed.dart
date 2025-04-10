@@ -21,7 +21,7 @@ mixin _$MyVisitEvent {
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -35,7 +35,7 @@ mixin _$MyVisitEvent {
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -49,7 +49,7 @@ mixin _$MyVisitEvent {
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -167,7 +167,7 @@ class _$StartedImpl with DiagnosticableTreeMixin implements _Started {
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -184,7 +184,7 @@ class _$StartedImpl with DiagnosticableTreeMixin implements _Started {
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -201,7 +201,7 @@ class _$StartedImpl with DiagnosticableTreeMixin implements _Started {
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -351,7 +351,7 @@ class _$GetVisitEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -368,7 +368,7 @@ class _$GetVisitEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -385,7 +385,7 @@ class _$GetVisitEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -517,7 +517,7 @@ class _$CheckConsultationDaysEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -534,7 +534,7 @@ class _$CheckConsultationDaysEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -551,7 +551,7 @@ class _$CheckConsultationDaysEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -631,7 +631,7 @@ abstract class _$$GetDoctorFreeTimeEventImplCopyWith<$Res> {
           $Res Function(_$GetDoctorFreeTimeEventImpl) then) =
       __$$GetDoctorFreeTimeEventImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String guid});
+  $Res call({String guid, DateTime date});
 }
 
 /// @nodoc
@@ -647,12 +647,17 @@ class __$$GetDoctorFreeTimeEventImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? guid = null,
+    Object? date = null,
   }) {
     return _then(_$GetDoctorFreeTimeEventImpl(
       guid: null == guid
           ? _value.guid
           : guid // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -662,14 +667,16 @@ class __$$GetDoctorFreeTimeEventImplCopyWithImpl<$Res>
 class _$GetDoctorFreeTimeEventImpl
     with DiagnosticableTreeMixin
     implements GetDoctorFreeTimeEvent {
-  const _$GetDoctorFreeTimeEventImpl({required this.guid});
+  const _$GetDoctorFreeTimeEventImpl({required this.guid, required this.date});
 
   @override
   final String guid;
+  @override
+  final DateTime date;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyVisitEvent.getDoctorFreeTime(guid: $guid)';
+    return 'MyVisitEvent.getDoctorFreeTime(guid: $guid, date: $date)';
   }
 
   @override
@@ -677,7 +684,8 @@ class _$GetDoctorFreeTimeEventImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MyVisitEvent.getDoctorFreeTime'))
-      ..add(DiagnosticsProperty('guid', guid));
+      ..add(DiagnosticsProperty('guid', guid))
+      ..add(DiagnosticsProperty('date', date));
   }
 
   @override
@@ -685,11 +693,12 @@ class _$GetDoctorFreeTimeEventImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetDoctorFreeTimeEventImpl &&
-            (identical(other.guid, guid) || other.guid == guid));
+            (identical(other.guid, guid) || other.guid == guid) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, guid);
+  int get hashCode => Object.hash(runtimeType, guid, date);
 
   @JsonKey(ignore: true)
   @override
@@ -704,7 +713,7 @@ class _$GetDoctorFreeTimeEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -712,7 +721,7 @@ class _$GetDoctorFreeTimeEventImpl
         bookDoctor,
     required TResult Function() getDoctorBookingRequests,
   }) {
-    return getDoctorFreeTime(guid);
+    return getDoctorFreeTime(guid, date);
   }
 
   @override
@@ -721,7 +730,7 @@ class _$GetDoctorFreeTimeEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -729,7 +738,7 @@ class _$GetDoctorFreeTimeEventImpl
         bookDoctor,
     TResult? Function()? getDoctorBookingRequests,
   }) {
-    return getDoctorFreeTime?.call(guid);
+    return getDoctorFreeTime?.call(guid, date);
   }
 
   @override
@@ -738,7 +747,7 @@ class _$GetDoctorFreeTimeEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -748,7 +757,7 @@ class _$GetDoctorFreeTimeEventImpl
     required TResult orElse(),
   }) {
     if (getDoctorFreeTime != null) {
-      return getDoctorFreeTime(guid);
+      return getDoctorFreeTime(guid, date);
     }
     return orElse();
   }
@@ -808,10 +817,12 @@ class _$GetDoctorFreeTimeEventImpl
 }
 
 abstract class GetDoctorFreeTimeEvent implements MyVisitEvent {
-  const factory GetDoctorFreeTimeEvent({required final String guid}) =
-      _$GetDoctorFreeTimeEventImpl;
+  const factory GetDoctorFreeTimeEvent(
+      {required final String guid,
+      required final DateTime date}) = _$GetDoctorFreeTimeEventImpl;
 
   String get guid;
+  DateTime get date;
   @JsonKey(ignore: true)
   _$$GetDoctorFreeTimeEventImplCopyWith<_$GetDoctorFreeTimeEventImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -897,7 +908,7 @@ class _$GetSelectedDateEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -914,7 +925,7 @@ class _$GetSelectedDateEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -931,7 +942,7 @@ class _$GetSelectedDateEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -1089,7 +1100,7 @@ class _$SelectFreeTimeImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -1106,7 +1117,7 @@ class _$SelectFreeTimeImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -1123,7 +1134,7 @@ class _$SelectFreeTimeImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -1318,7 +1329,7 @@ class _$BookDoctorEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -1335,7 +1346,7 @@ class _$BookDoctorEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -1352,7 +1363,7 @@ class _$BookDoctorEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,
@@ -1491,7 +1502,7 @@ class _$GetDoctorBookingRequestsEventImpl
     required TResult Function() started,
     required TResult Function(String guid) getVisit,
     required TResult Function() checkConsultationDays,
-    required TResult Function(String guid) getDoctorFreeTime,
+    required TResult Function(String guid, DateTime date) getDoctorFreeTime,
     required TResult Function(DateTime selectedDate) getSelectedDate,
     required TResult Function(DoctorBooking freeTime) selectFreeTime,
     required TResult Function(String doctorBookingGuid, String comment,
@@ -1508,7 +1519,7 @@ class _$GetDoctorBookingRequestsEventImpl
     TResult? Function()? started,
     TResult? Function(String guid)? getVisit,
     TResult? Function()? checkConsultationDays,
-    TResult? Function(String guid)? getDoctorFreeTime,
+    TResult? Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult? Function(DateTime selectedDate)? getSelectedDate,
     TResult? Function(DoctorBooking freeTime)? selectFreeTime,
     TResult? Function(String doctorBookingGuid, String comment,
@@ -1525,7 +1536,7 @@ class _$GetDoctorBookingRequestsEventImpl
     TResult Function()? started,
     TResult Function(String guid)? getVisit,
     TResult Function()? checkConsultationDays,
-    TResult Function(String guid)? getDoctorFreeTime,
+    TResult Function(String guid, DateTime date)? getDoctorFreeTime,
     TResult Function(DateTime selectedDate)? getSelectedDate,
     TResult Function(DoctorBooking freeTime)? selectFreeTime,
     TResult Function(String doctorBookingGuid, String comment,

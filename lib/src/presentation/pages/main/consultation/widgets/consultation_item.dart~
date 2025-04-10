@@ -65,7 +65,7 @@ class ConsultationItem extends StatelessWidget {
                           ? doctor?.description
                           : localSource.locale == 'uz'
                           ? doctor?.descriptionUz
-                          : doctor?.descriptionEng)?.substring(3) ?? '',
+                          : doctor?.descriptionEng) ?? '',
                       style: context.textStyle.regularFootnote.copyWith(
                         color: context.color.grey,
                       ),

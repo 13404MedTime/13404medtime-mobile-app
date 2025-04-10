@@ -84,7 +84,7 @@ class _ConsultationPageState extends State<ConsultationPage> with ConsultationMi
                     'search': text,
                     'limit': 20,
                     'offset': 1,
-                    'view_fields': ['category_name', 'category_name_uz', 'description', 'description_uz'],
+                    'view_fields': ['category_name', 'category_name_eng', 'category_name_uz', 'description', 'description_uz'],
                   },
                 );
                 return response.fold<List<DoctorTypeModel>>(

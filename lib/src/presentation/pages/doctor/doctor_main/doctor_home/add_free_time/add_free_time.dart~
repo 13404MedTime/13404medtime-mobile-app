@@ -40,7 +40,7 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                     title: context.translate('are_you_want_remove_free_time'),
                     content: context.translate('are_you_want_remove_free_time_body'),
                     acceptOnTap: () {
-                      if(context.read<DoctorHomeBloc>().state.requests.any((e) => e.guid == widget.id?.guid)){
+                      if(context.read<DoctorHomeBloc>().state.requests.any((e) => e.doctorBookingIdData.guid == widget.id?.guid)){
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(context.translate('you_cant_remove_free_time')),
@@ -268,7 +268,7 @@ class _AddFreeTimeState extends State<AddFreeTime> with AddFreeTimeMixin {
                           final startBooked = int.parse(i.fromTime.replaceAll(':', ''));
                           final endBooked = int.parse(i.toTime.replaceAll(':', ''));
                           if ((startBooked <= start && start <= endBooked) ||
-                              (startBooked <= end && end <= endBooked)) {
+                              (startBooked <= end && end <= endBooked) || (start <= startBooked && end >= endBooked)) {
                             isFree = false;
                           }
                         }

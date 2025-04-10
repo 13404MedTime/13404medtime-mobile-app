@@ -33,7 +33,7 @@ class DoctorCheckBloc extends Bloc<DoctorCheckEvent, DoctorCheckState> {
             'order': {},
             'view_fields': [],
             'search': '',
-            'limit': 1000,
+            'limit': 10000,
             'undefined': '',
           }
         },
