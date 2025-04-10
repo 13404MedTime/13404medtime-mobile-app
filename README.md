@@ -1,17 +1,19 @@
 # medtime_mobile
 
-A new Flutter project.
+How to run this code:
 
-## Getting Started
+- Install Android Studio
+- Download Flutter SDK from official website
+- Install FVM(Flutter Version Management)
 
-This project is a starting point for a Flutter application.
+- In Android Studio:
+  - Download Android SDK
+  - Download NDK Versions
+  - Download Android for Emulator
+  - Create Emulator
+  - Import code
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# 13404medtime-mobile-app
+- FVM:
+  - Instal Flutter 3.16.0
+  - Run: "fvm flutter pub get" - to download flutter packages
+  - Run: "fvm flutter run" - to run for emulator
