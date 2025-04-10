@@ -272,7 +272,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                               Routes.doctorRequests,
                                               arguments: DoctorRequestArguments(
                                                 bookingResponse:
-                                                    state.requests[index],
+                                                    state.filteredRequests[index],
                                                 reject: () async {
                                                   final result =
                                                       await showDialog<bool?>(
@@ -334,7 +334,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         .add(
                                                           RejectDoctorBookingRequest$DoctorHomeEvent(
                                                             requestId: state
-                                                                .requests[index]
+                                                                .filteredRequests[index]
                                                                 .guid,
                                                             rejectComment:
                                                                 _rejectCommentController
@@ -364,7 +364,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         .add(
                                                           AcceptDoctorBookingRequest$DoctorHomeEvent(
                                                             booking:
-                                                                state.requests[
+                                                                state.filteredRequests[
                                                                     index],
                                                           ),
                                                         );
@@ -392,7 +392,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         children: [
                                                           Text(
                                                             state
-                                                                .requests[index]
+                                                                .filteredRequests[index]
                                                                 .clientsIdData
                                                                 .clientName,
                                                             style: TextStyle(
@@ -421,7 +421,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                                   width: 4),
                                                               Text(
                                                                 state
-                                                                    .requests[
+                                                                    .filteredRequests[
                                                                         index]
                                                                     .clientsIdData
                                                                     .phone,
@@ -519,7 +519,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                                   .add(
                                                                     RejectDoctorBookingRequest$DoctorHomeEvent(
                                                                       requestId: state
-                                                                          .requests[
+                                                                          .filteredRequests[
                                                                               index]
                                                                           .guid,
                                                                       rejectComment:
@@ -563,7 +563,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                                   .add(
                                                                     AcceptDoctorBookingRequest$DoctorHomeEvent(
                                                                       booking: state
-                                                                              .requests[
+                                                                              .filteredRequests[
                                                                           index],
                                                                     ),
                                                                   );
@@ -599,7 +599,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                       const SizedBox(width: 8),
                                                       Text(
                                                         DateTime.parse(state
-                                                                .requests[index]
+                                                                .filteredRequests[index]
                                                                 .doctorBookingIdData
                                                                 .date)
                                                             .subtract(
@@ -625,7 +625,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                       ),
                                                       const SizedBox(width: 8),
                                                       Text(
-                                                        '${state.requests[index].doctorBookingIdData.fromTime}-${state.requests[index].doctorBookingIdData.toTime}',
+                                                        '${state.filteredRequests[index].doctorBookingIdData.fromTime}-${state.filteredRequests[index].doctorBookingIdData.toTime}',
                                                         style: TextStyle(
                                                           color: context
                                                               .colorScheme

@@ -34,7 +34,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
         body: BlocBuilder<DoctorHomeBloc, DoctorHomeState>(
           builder: (context, state) => RefreshIndicator(
             onRefresh: () async => context.read<DoctorHomeBloc>()
-            ..add(const GetNextPatients$DoctorHomeEvent(false))
+              ..add(const GetNextPatients$DoctorHomeEvent(false))
               ..add(const GetPatients$DoctorHomeEvent())
               ..add(const GetDoctorBookingRequests$DoctorHomeEvent()),
             child: Padding(
@@ -64,6 +64,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                       ),
                     ),
                     onSelectionChanged: (p0) => context.read<DoctorHomeBloc>()
+                      ..add(const GetNextPatients$DoctorHomeEvent(false))
                       ..add(SelectSegment$DoctorHomeEvent(index: p0))
                       ..add(const GetDoctorBookingRequests$DoctorHomeEvent())
                       ..add(const GetPatients$DoctorHomeEvent()),
@@ -134,7 +135,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                             if (result != null &&
                                                 result == true &&
                                                 context.mounted) {
-                                              context.read<DoctorHomeBloc>().add(
+                                              context
+                                                  .read<DoctorHomeBloc>()
+                                                  .add(
                                                     DeleteDoctorFreeTime$DoctorHomeEvent(
                                                       timeId: i.guid,
                                                     ),
@@ -179,7 +182,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        color: context.colorScheme
+                                                        color: context
+                                                            .colorScheme
                                                             .onPrimaryContainer
                                                             .withOpacity(0.8),
                                                       ),
@@ -191,7 +195,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         fontSize: 20,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: context.colorScheme
+                                                        color: context
+                                                            .colorScheme
                                                             .onPrimaryContainer,
                                                       ),
                                                     ),
@@ -200,12 +205,13 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                       width: 40,
                                                       height: 2,
                                                       decoration: BoxDecoration(
-                                                        color: context.colorScheme
+                                                        color: context
+                                                            .colorScheme
                                                             .onPrimaryContainer
                                                             .withOpacity(0.2),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                1),
+                                                            BorderRadius
+                                                                .circular(1),
                                                       ),
                                                     ),
                                                   ],
