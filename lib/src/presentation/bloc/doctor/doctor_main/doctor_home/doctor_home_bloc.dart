@@ -87,7 +87,8 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState>
       if (result.isRight) {
         final response = result.right.data.data.response;
         emit(state.copyWith(
-            bookings: state.page == 0 ? response : [...state.bookings, ...response],
+            bookings:
+                state.page == 0 ? response : [...state.bookings, ...response],
             busyBookings: booked.right.data.data.response
                 .where(
                   (element) =>
@@ -114,7 +115,8 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState>
         .where((element) =>
             element.date.millisecondsSinceEpoch >=
             DateTime.now().millisecondsSinceEpoch)
-        .toList();
+        .toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
     emit(state.copyWith(freeBookings: freeBookings));
   }
 

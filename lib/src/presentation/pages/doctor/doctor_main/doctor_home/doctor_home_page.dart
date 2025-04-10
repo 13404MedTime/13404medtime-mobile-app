@@ -135,13 +135,15 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                             if (result != null &&
                                                 result == true &&
                                                 context.mounted) {
-                                              context
-                                                  .read<DoctorHomeBloc>()
-                                                  .add(
-                                                    DeleteDoctorFreeTime$DoctorHomeEvent(
-                                                      timeId: i.guid,
-                                                    ),
-                                                  );
+                                              context.read<DoctorHomeBloc>()
+                                                ..add(
+                                                    const GetNextPatients$DoctorHomeEvent(
+                                                        false))
+                                                ..add(
+                                                  DeleteDoctorFreeTime$DoctorHomeEvent(
+                                                    timeId: i.guid,
+                                                  ),
+                                                );
                                             }
                                           },
                                           child: InkWell(
@@ -271,8 +273,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                               context,
                                               Routes.doctorRequests,
                                               arguments: DoctorRequestArguments(
-                                                bookingResponse:
-                                                    state.filteredRequests[index],
+                                                bookingResponse: state
+                                                    .filteredRequests[index],
                                                 reject: () async {
                                                   final result =
                                                       await showDialog<bool?>(
@@ -334,7 +336,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         .add(
                                                           RejectDoctorBookingRequest$DoctorHomeEvent(
                                                             requestId: state
-                                                                .filteredRequests[index]
+                                                                .filteredRequests[
+                                                                    index]
                                                                 .guid,
                                                             rejectComment:
                                                                 _rejectCommentController
@@ -363,9 +366,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         .read<DoctorHomeBloc>()
                                                         .add(
                                                           AcceptDoctorBookingRequest$DoctorHomeEvent(
-                                                            booking:
-                                                                state.filteredRequests[
-                                                                    index],
+                                                            booking: state
+                                                                    .filteredRequests[
+                                                                index],
                                                           ),
                                                         );
                                                     Navigator.pop(context);
@@ -392,7 +395,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                         children: [
                                                           Text(
                                                             state
-                                                                .filteredRequests[index]
+                                                                .filteredRequests[
+                                                                    index]
                                                                 .clientsIdData
                                                                 .clientName,
                                                             style: TextStyle(
@@ -599,7 +603,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                                                       const SizedBox(width: 8),
                                                       Text(
                                                         DateTime.parse(state
-                                                                .filteredRequests[index]
+                                                                .filteredRequests[
+                                                                    index]
                                                                 .doctorBookingIdData
                                                                 .date)
                                                             .subtract(
@@ -1244,9 +1249,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>
                     await Navigator.pushNamed(context, Routes.addFreeTime).then(
                       (value) {
                         if (context.mounted) {
-                          context
-                              .read<DoctorHomeBloc>()
-                              .add(const GetPatients$DoctorHomeEvent());
+                          context.read<DoctorHomeBloc>()
+                            ..add(const GetNextPatients$DoctorHomeEvent(false))
+                            ..add(const GetPatients$DoctorHomeEvent());
                         }
                       },
                     );

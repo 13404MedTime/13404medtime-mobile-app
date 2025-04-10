@@ -54,7 +54,12 @@ class _MainPageState extends State<MainPage> with MainMixin {
               currentIndex: state.bottomMenu.index,
               onTap: (i) async {
                 context.read<MainBloc>().add(MainEventChanged(BottomMenu.values[i]));
-                context.read<HealthBloc>().add(const GetPedometerEvent());
+                context.read<HealthBloc>()
+                  ..add(const GetStepsCountOfTodayEvent())
+                  ..add(const GetArterialPressureEvent())
+                  ..add(const GetBloodSugarEvent())
+                  ..add(const GetTWHEvent())
+                  ..add(const GetPedometerEvent());
                 String tag = FirebaseAnalyticsEvents.mainViewNavigationBtn;
                 switch (i) {
                   case 0:
