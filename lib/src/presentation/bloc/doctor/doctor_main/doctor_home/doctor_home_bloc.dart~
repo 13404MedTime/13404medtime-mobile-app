@@ -11,16 +11,22 @@ import '../../../../../domain/repositories/doctor/doctor_main/doctor_home/doctor
 part 'doctor_home_event.dart';
 part 'doctor_home_state.dart';
 
-class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMixin {
+class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState>
+    with CacheMixin {
   DoctorHomeBloc(this.doctorHomeRepository) : super(const DoctorHomeState()) {
     on<DoctorHomeEvent>(
       (event, emit) => switch (event) {
         SelectSegment$DoctorHomeEvent _ => _selectSegment(event, emit),
         GetPatients$DoctorHomeEvent _ => _getPatients(event, emit),
-        DeleteDoctorFreeTime$DoctorHomeEvent _ => _deleteDoctorFreeTime(event, emit),
-        GetDoctorBookingRequests$DoctorHomeEvent _ => _getDoctorBookingRequests(event, emit),
-        RejectDoctorBookingRequest$DoctorHomeEvent _ => _rejectDoctorBookingRequest(event, emit),
-        AcceptDoctorBookingRequest$DoctorHomeEvent _ => _acceptDoctorBookingRequest(event, emit),
+        DeleteDoctorFreeTime$DoctorHomeEvent _ =>
+          _deleteDoctorFreeTime(event, emit),
+        GetNextPatients$DoctorHomeEvent _ => _getNextPatient(event, emit),
+        GetDoctorBookingRequests$DoctorHomeEvent _ =>
+          _getDoctorBookingRequests(event, emit),
+        RejectDoctorBookingRequest$DoctorHomeEvent _ =>
+          _rejectDoctorBookingRequest(event, emit),
+        AcceptDoctorBookingRequest$DoctorHomeEvent _ =>
+          _acceptDoctorBookingRequest(event, emit),
         AddTimeLoading$DoctorHomeEvent _ => _addTimeLoading(event, emit),
       },
     );
@@ -28,7 +34,15 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
 
   final DoctorHomeRepository doctorHomeRepository;
 
-  void _selectSegment(SelectSegment$DoctorHomeEvent event, Emitter<DoctorHomeState> emit) {
+  void _getNextPatient(
+    GetNextPatients$DoctorHomeEvent event,
+    Emitter<DoctorHomeState> emit,
+  ) {
+    emit(state.copyWith(page: event.inc ? state.page + 1 : 0));
+  }
+
+  void _selectSegment(
+      SelectSegment$DoctorHomeEvent event, Emitter<DoctorHomeState> emit) {
     emit(state.copyWith(selectedSegments: event.index));
   }
 
@@ -42,8 +56,25 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
         request: {
           'data': {
             'doctor_id': localSource.userId,
-            'limit': 10000,
-            'offset': null,
+            'is_booked': false,
+            'limit': 20,
+            'offset': state.page,
+            // ignore: inference_failure_on_collection_literal
+            'order': {},
+            // ignore: inference_failure_on_collection_literal
+            'view_fields': [],
+            'search': '',
+            'undefined': ''
+          }
+        },
+      );
+      final booked = await doctorHomeRepository.getPatient(
+        request: {
+          'data': {
+            'doctor_id': localSource.userId,
+            'is_booked': true,
+            'limit': 20,
+            'offset': state.page,
             // ignore: inference_failure_on_collection_literal
             'order': {},
             // ignore: inference_failure_on_collection_literal
@@ -55,7 +86,16 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
       );
       if (result.isRight) {
         final response = result.right.data.data.response;
-        emit(state.copyWith(bookings: response));
+        emit(state.copyWith(
+            bookings: state.page == 0 ? response : [...state.bookings, ...response],
+            busyBookings: booked.right.data.data.response
+                .where(
+                  (element) =>
+                      !element.finished &&
+                      element.date.millisecondsSinceEpoch >=
+                          DateTime.now().millisecondsSinceEpoch,
+                )
+                .toList()));
         _separateBookings(event, emit);
       } else {
         emit(state.copyWith(isLoading: false));
@@ -72,17 +112,10 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
   ) {
     final freeBookings = state.bookings
         .where((element) =>
-            !element.isBooked && element.date.millisecondsSinceEpoch >= DateTime.now().millisecondsSinceEpoch)
+            element.date.millisecondsSinceEpoch >=
+            DateTime.now().millisecondsSinceEpoch)
         .toList();
-    final busyBookings = state.bookings
-        .where(
-          (element) =>
-              element.isBooked &&
-              !element.finished &&
-              element.date.millisecondsSinceEpoch >= DateTime.now().millisecondsSinceEpoch,
-        )
-        .toList();
-    emit(state.copyWith(freeBookings: freeBookings, busyBookings: busyBookings));
+    emit(state.copyWith(freeBookings: freeBookings));
   }
 
   Future<void> _deleteDoctorFreeTime(
@@ -127,13 +160,14 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
         emit(state.copyWith(isLoading: false));
       },
       (r) {
-        debugPrint('MYLISTS: ${r.data.data.response
-            .where((e) => e.status.first.toLowerCase() == 'pending' && !e.doctorBookingIdData.isBooked)
-            .toList();
+        debugPrint(
+            'MYLISTS: ${r.data.data.response.where((e) => e.status.first.toLowerCase() == 'pending' && !e.doctorBookingIdData.isBooked).toList()}');
         emit(state.copyWith(
             requests: r.data.data.response,
             filteredRequests: r.data.data.response
-                .where((e) => e.status.first.toLowerCase() == 'pending' && !e.doctorBookingIdData.isBooked)
+                .where((e) =>
+                    e.status.first.toLowerCase() == 'pending' &&
+                    !e.doctorBookingIdData.isBooked)
                 .toList()));
       },
     );
@@ -156,7 +190,8 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
         },
       );
 
-      await _getDoctorBookingRequests(const GetDoctorBookingRequests$DoctorHomeEvent(), emit);
+      await _getDoctorBookingRequests(
+          const GetDoctorBookingRequests$DoctorHomeEvent(), emit);
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -190,7 +225,8 @@ class DoctorHomeBloc extends Bloc<DoctorHomeEvent, DoctorHomeState> with CacheMi
         },
       );
 
-      await _getDoctorBookingRequests(const GetDoctorBookingRequests$DoctorHomeEvent(), emit);
+      await _getDoctorBookingRequests(
+          const GetDoctorBookingRequests$DoctorHomeEvent(), emit);
     } on Exception catch (e) {
       debugPrint(e.toString());
     }

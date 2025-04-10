@@ -518,110 +518,141 @@ class _MyVisitPageState extends State<MyVisitPage>
                             }
 
                             if (state.selected != null) {
-                              final add = await showDialog<bool>(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  backgroundColor:
-                                      context.colorScheme.background,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  contentPadding: const EdgeInsets.all(24),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        context.translate('leave_comment'),
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: context.colorScheme.primary,
+                              print(int.parse(
+                                  '${state.selected!.date.month}${state.selected!.date.day + 1}'));
+                              print(int.parse(
+                                  '${DateTime.now().month}${DateTime.now().day}'));
+                              if ((int.parse('${state.selected!.date.month}${state.selected!.date.day - 1}') ==
+                                          int.parse(
+                                              '${DateTime.now().month}${DateTime.now().day}') &&
+                                      int.parse(state.selected!.fromTime
+                                              .replaceAll(':', '')) >
+                                          int.parse(
+                                              '${DateTime.now().hour.toString().padLeft(2, '0')}${DateTime.now().minute.toString().padLeft(2, '0')}')) ||
+                                  int.parse(
+                                          '${state.selected!.date.month}${state.selected!.date.day - 1}') >
+                                      int.parse(
+                                          '${DateTime.now().month}${DateTime.now().day}')) {
+                                final add = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    backgroundColor:
+                                        context.colorScheme.background,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    contentPadding: const EdgeInsets.all(24),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          context.translate('leave_comment'),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: context.colorScheme.primary,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        TextField(
+                                          controller: textController,
+                                          maxLines: 2,
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor:
+                                                context.colorScheme.surface,
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              borderSide: BorderSide(
+                                                  color: context
+                                                      .colorScheme.outline),
+                                            ),
+                                            hintText: context
+                                                .translate('comment_required'),
+                                            hintStyle: TextStyle(
+                                              color: context
+                                                  .colorScheme.onSurface
+                                                  .withOpacity(0.3),
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 14,
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 12),
+                                          ),
+                                          style: TextStyle(
+                                              color: context
+                                                  .colorScheme.onSurface),
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                    actionsPadding: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 12),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: Text(
+                                          context.translate('back'),
+                                          style: TextStyle(
+                                            color:
+                                                context.colorScheme.secondary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
-                                      TextField(
-                                        controller: textController,
-                                        maxLines: 2,
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor:
-                                              context.colorScheme.surface,
-                                          border: OutlineInputBorder(
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          final result = await onPressed();
+                                          if (context.mounted && result) {
+                                            Navigator.pop(context, true);
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              context.colorScheme.primary,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 24, vertical: 12),
+                                          shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            borderSide: BorderSide(
-                                                color: context
-                                                    .colorScheme.outline),
                                           ),
-                                          hintText: context
-                                              .translate('comment_required'),
-                                          hintStyle: TextStyle(
-                                            color: context.colorScheme.onSurface
-                                                .withOpacity(0.3),
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 14,
-                                          ),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16, vertical: 12),
                                         ),
-                                        style: TextStyle(
+                                        child: Text(
+                                          context.translate('order'),
+                                          style: TextStyle(
                                             color:
-                                                context.colorScheme.onSurface),
+                                                context.colorScheme.onPrimary,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                       ),
-                                      const SizedBox(height: 20),
                                     ],
                                   ),
-                                  actionsPadding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 12),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, false),
-                                      child: Text(
-                                        context.translate('back'),
-                                        style: TextStyle(
-                                          color: context.colorScheme.secondary,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                );
+                                if (context.mounted && add != null && add) {
+                                  context.read<MyVisitBloc>()
+                                    ..add(GetDoctorFreeTimeEvent(
+                                        guid: guid, date: DateTime.now()))
+                                    ..add(
+                                        const GetDoctorBookingRequestsEvent());
+                                }
+                                textController.text = '';
+                                selectedDate.value = DateTime.now();
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                  ..clearSnackBars()
+                                  ..showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        context.translate('session_is_ended'),
                                       ),
                                     ),
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        final result = await onPressed();
-                                        if (context.mounted && result) {
-                                          Navigator.pop(context, true);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            context.colorScheme.primary,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24, vertical: 12),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        context.translate('order'),
-                                        style: TextStyle(
-                                          color: context.colorScheme.onPrimary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                              if (context.mounted && add != null && add) {
-                                context.read<MyVisitBloc>()
-                                  ..add(GetDoctorFreeTimeEvent(
-                                      guid: guid, date: DateTime.now()))
-                                  ..add(const GetDoctorBookingRequestsEvent());
+                                  );
                               }
-                              textController.text = '';
-                              selectedDate.value = DateTime.now();
                             }
                           }
                         },

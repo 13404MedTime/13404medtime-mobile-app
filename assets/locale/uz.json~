@@ -345,6 +345,5 @@
   "illness_name": "Kasallik nomi",
   "you_cant_remove_free_time": "Seansni o'chirib bo'lmaydi",
   "default_code": "Standart kod: 1212",
-  "health_info": "Apple Health ma'lumotlari",
-  "session_is_ended": "Seans tugagan"
+  "health_info": "Apple Health ma'lumotlari"
 }

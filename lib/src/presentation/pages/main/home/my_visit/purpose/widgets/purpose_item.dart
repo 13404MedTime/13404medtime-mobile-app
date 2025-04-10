@@ -36,22 +36,11 @@ class PurposeItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  title,
+                  subtitle,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                AppUtils.kBoxHeight4,
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: context.theme.colorScheme.onSurface,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  maxLines: 1,
                 ),
                 AppUtils.kBoxHeight8,
                 SizedBox(

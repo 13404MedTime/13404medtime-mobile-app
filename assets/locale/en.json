@@ -277,10 +277,10 @@
   "username": "Username",
   "password": "Password",
   "login": "Log In",
-  "free_time": "Free Time",
+  "free_time": "Session",
   "booked_time": "Booked",
   "change": "Change",
-  "add_free_time": "Add Free Time",
+  "add_free_time": "Add Session",
   "are_you_want_remove_free_time": "Do you really want to remove this session?",
   "are_you_want_remove_free_time_body": "This session will be removed from your doctor schedule",
   "doctor_name": "Doctor's Name",
@@ -329,7 +329,7 @@
   "are_you_sure_delete": "Are you sure you want to delete?",
   "upcoming_visits": "Upcoming Visits",
   "meetings": "Meetings",
-  "you_dont_have_free_time": "You don't have free time",
+  "you_dont_have_free_time": "You don't have session",
   "confirmed": "Confirmed",
   "doctor_request": "Request for doctor",
   "appointment_details": "Appointment_details",
@@ -344,7 +344,8 @@
   "are_you_sure_you_want_to_cancel": "Are you sure you want to cancel?",
   "do_you_want_accept": "Do you really want to accept?",
   "illness_name": "Illness name",
-  "you_cant_remove_free_time": "You can't remove free time",
+  "you_cant_remove_free_time": "You can't remove session",
   "default_code": "Default Code: 1212",
-  "health_info": "Information from Apple Health"
+  "health_info": "Information from Apple Health",
+  "session_is_ended": "Session is ended"
 }

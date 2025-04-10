@@ -4,6 +4,7 @@ class DoctorHomeState extends Equatable {
   const DoctorHomeState({
     this.isLoading = false,
     this.isLoadingAdd = false,
+    this.page = 0,
     this.selectedSegments = const <int>{0},
     this.bookings = const [],
     this.freeBookings = const [],
@@ -14,6 +15,7 @@ class DoctorHomeState extends Equatable {
 
   final bool isLoading;
   final bool isLoadingAdd;
+  final int page;
   final Set<int> selectedSegments;
   final List<DoctorBooking> bookings;
   final List<DoctorBooking> freeBookings;
@@ -25,17 +27,19 @@ class DoctorHomeState extends Equatable {
   List<Object?> get props => [
         isLoading,
         isLoadingAdd,
+        page,
         selectedSegments,
         bookings,
         freeBookings,
         busyBookings,
         requests,
-    filteredRequests,
+        filteredRequests,
       ];
 
   DoctorHomeState copyWith({
     bool? isLoading,
     bool? isLoadingAdd,
+    int? page,
     Set<int>? selectedSegments,
     List<DoctorBooking>? bookings,
     List<DoctorBooking>? freeBookings,
@@ -46,6 +50,7 @@ class DoctorHomeState extends Equatable {
       DoctorHomeState(
         isLoading: isLoading ?? this.isLoading,
         isLoadingAdd: isLoadingAdd ?? this.isLoadingAdd,
+        page: page ?? this.page,
         selectedSegments: selectedSegments ?? this.selectedSegments,
         bookings: bookings ?? this.bookings,
         freeBookings: freeBookings ?? this.freeBookings,

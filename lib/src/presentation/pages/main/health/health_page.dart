@@ -28,7 +28,8 @@ class HealthPage extends StatefulWidget {
   State<HealthPage> createState() => _HealthPageState();
 }
 
-class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindingObserver {
+class _HealthPageState extends State<HealthPage>
+    with HealthMixin, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -39,9 +40,12 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (mounted) {
       if (state == AppLifecycleState.resumed && Platform.isIOS) {
-        context.read<HealthBloc>().add(
-              const GetStepsCountOfTodayEvent(),
-            );
+        context.read<HealthBloc>()
+          ..add(const GetStepsCountOfTodayEvent())
+          ..add(const GetArterialPressureEvent())
+          ..add(const GetBloodSugarEvent())
+          ..add(const GetTWHEvent())
+          ..add(const GetPedometerEvent());
       }
     }
   }
@@ -54,34 +58,36 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
 
   @override
   Widget build(BuildContext context) => BlocBuilder<HealthBloc, HealthState>(
-        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading,
         builder: (context, state) => state.isLoading
             ? const Center(child: CustomCircularProgressIndicator())
             : Scaffold(
-                appBar: (state.remindMeGivePermissionAppleHealth && Platform.isIOS)
-                    ? PermissionAppBar(
-                        onTap: Platform.isIOS
-                            ? null
-                            : () {
-                                log('*& -> 1) ${state.remindMeGoogleFitInstallationLater && !localSource.isGoogleFitInstalled}');
-                                log('*& -> 2) ${state.remindMeGoogleFitRegistrationLater && !localSource.isRegisteredFromGoogleFit}');
-                                // if (state.remindMeGoogleFitInstallationLater && !localSource.isGoogleFitInstalled) {
-                                //   context.read<HealthBloc>().add(
-                                //         PushPlayMarketForInstallGoogleFitEvent(
-                                //           context: context,
-                                //           isFromDialog: false,
-                                //         ),
-                                //       );
-                                // } else if (state.remindMeGoogleFitRegistrationLater &&
-                                //     !localSource.isRegisteredFromGoogleFit) {
-                                //   context.read<HealthBloc>().add(
-                                //         const PushGoogleFitForRegistrationEvent(),
-                                //       );
-                                // }
-                              },
-                        title: context.translate('health'),
-                      )
-                    : AppBar(title: Text(context.translate('health'))),
+                appBar:
+                    (state.remindMeGivePermissionAppleHealth && Platform.isIOS)
+                        ? PermissionAppBar(
+                            onTap: Platform.isIOS
+                                ? null
+                                : () {
+                                    log('*& -> 1) ${state.remindMeGoogleFitInstallationLater && !localSource.isGoogleFitInstalled}');
+                                    log('*& -> 2) ${state.remindMeGoogleFitRegistrationLater && !localSource.isRegisteredFromGoogleFit}');
+                                    // if (state.remindMeGoogleFitInstallationLater && !localSource.isGoogleFitInstalled) {
+                                    //   context.read<HealthBloc>().add(
+                                    //         PushPlayMarketForInstallGoogleFitEvent(
+                                    //           context: context,
+                                    //           isFromDialog: false,
+                                    //         ),
+                                    //       );
+                                    // } else if (state.remindMeGoogleFitRegistrationLater &&
+                                    //     !localSource.isRegisteredFromGoogleFit) {
+                                    //   context.read<HealthBloc>().add(
+                                    //         const PushGoogleFitForRegistrationEvent(),
+                                    //       );
+                                    // }
+                                  },
+                            title: context.translate('health'),
+                          )
+                        : AppBar(title: Text(context.translate('health'))),
                 body: BlocListener<MainBloc, MainState>(
                   listener: _listener,
                   child: BlocBuilder<HealthBloc, HealthState>(
@@ -95,21 +101,35 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                             sliver: SliverToBoxAdapter(
                               child: BlocBuilder<HealthBloc, HealthState>(
                                 buildWhen: (previous, current) =>
-                                    previous.pedometerList != current.pedometerList ||
-                                    previous.isUpdatedPedometer != current.isUpdatedPedometer,
+                                    previous.pedometerList !=
+                                        current.pedometerList ||
+                                    previous.isUpdatedPedometer !=
+                                        current.isUpdatedPedometer,
                                 builder: (_, state) {
                                   if (state.pedometerList.isNotEmpty) {
-                                    final List<PedometerModel> list =
-                                        state.pedometerList.fold<List<PedometerModel>>([], (previousVal, element) {
+                                    final List<PedometerModel> list = state
+                                        .pedometerList
+                                        .fold<List<PedometerModel>>([],
+                                            (previousVal, element) {
                                       if (previousVal.isEmpty) {
                                         return [element];
                                       } else {
-                                        final DateTime? previousDate = previousVal.first.date?.toDateTimeForHealth;
-                                        final DateTime? thisDate = element.date?.toDateTimeForHealth;
-                                        if (previousDate != null && thisDate != null) {
-                                          if (thisDate.difference(previousDate).inDays > 0) {
+                                        final DateTime? previousDate =
+                                            previousVal.first.date
+                                                ?.toDateTimeForHealth;
+                                        final DateTime? thisDate =
+                                            element.date?.toDateTimeForHealth;
+                                        if (previousDate != null &&
+                                            thisDate != null) {
+                                          if (thisDate
+                                                  .difference(previousDate)
+                                                  .inDays >
+                                              0) {
                                             return [element];
-                                          } else if (thisDate.difference(previousDate).inDays == 0) {
+                                          } else if (thisDate
+                                                  .difference(previousDate)
+                                                  .inDays ==
+                                              0) {
                                             previousVal.add(element);
                                           }
                                         }
@@ -123,7 +143,8 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                     for (final PedometerModel val in list) {
                                       steps += val.stepCount ?? 0;
                                       distance += val.distance ?? 0;
-                                      minutes += ((val.hour ?? 0) * 60) + (val.minutes ?? 0);
+                                      minutes += ((val.hour ?? 0) * 60) +
+                                          (val.minutes ?? 0);
                                     }
                                     hour = minutes ~/ 60;
                                     minutes = minutes % 60;
@@ -137,18 +158,23 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                             type: SubHealthType.pedometer,
                                             subHealthList: List.generate(
                                               state.pedometerList.length,
-                                              (index) => SubHealthModel.fromPedometer(
+                                              (index) =>
+                                                  SubHealthModel.fromPedometer(
                                                 state.pedometerList[index],
                                               ),
                                             ),
                                           ),
                                         );
                                         if (state.isUpdatedPedometer) {
-                                          _bloc.add(const HealthEvent.updatedPedometerIsUpdated(isUpdate: false));
+                                          _bloc.add(const HealthEvent
+                                              .updatedPedometerIsUpdated(
+                                              isUpdate: false));
                                         }
                                       },
                                       // steps: state.stepsCount,
-                                      steps: Platform.isIOS ? state.stepsCount : steps,
+                                      steps: Platform.isIOS
+                                          ? state.stepsCount
+                                          : steps,
                                       hour: hour,
                                       minutes: minutes,
                                       distance: distance,
@@ -165,12 +191,16 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                             type: SubHealthType.pedometer,
                                             subHealthList: List.generate(
                                               state.pedometerList.length,
-                                              (index) => SubHealthModel.fromPedometer(state.pedometerList[index]),
+                                              (index) => SubHealthModel
+                                                  .fromPedometer(state
+                                                      .pedometerList[index]),
                                             ),
                                           ),
                                         );
                                         if (state.isUpdatedPedometer) {
-                                          _bloc.add(const HealthEvent.updatedPedometerIsUpdated(isUpdate: false));
+                                          _bloc.add(const HealthEvent
+                                              .updatedPedometerIsUpdated(
+                                              isUpdate: false));
                                         }
                                       },
                                     );
@@ -186,7 +216,8 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                             padding: AppUtils.kPaddingHorizontal16,
                             sliver: SliverToBoxAdapter(
                               child: BlocBuilder<HealthBloc, HealthState>(
-                                buildWhen: (previous, current) => previous.twhList != current.twhList,
+                                buildWhen: (previous, current) =>
+                                    previous.twhList != current.twhList,
                                 builder: (_, state) => state.twhList.isNotEmpty
                                     ? TemperatureWeightHeightWidget(
                                         onTap: () async {
@@ -198,17 +229,21 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                               type: SubHealthType.twh,
                                               subHealthList: List.generate(
                                                 state.twhList.length,
-                                                (index) => SubHealthModel.fromTemperatureWeightHeight(
+                                                (index) => SubHealthModel
+                                                    .fromTemperatureWeightHeight(
                                                   state.twhList[index],
                                                 ),
                                               ),
                                             ),
                                           );
                                         },
-                                        bodyTemperature: state.twhList.first.bodyTemperature ?? 0,
+                                        bodyTemperature: state.twhList.first
+                                                .bodyTemperature ??
+                                            0,
                                         height: state.twhList.first.height ?? 0,
                                         weight: state.twhList.first.weight ?? 0,
-                                        imt: state.twhList.first.averageBmi ?? 0,
+                                        imt:
+                                            state.twhList.first.averageBmi ?? 0,
                                         date: state.twhList.first.date ?? '',
                                       )
                                     : TemperatureWeightHeightWidget(
@@ -221,7 +256,8 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                               type: SubHealthType.twh,
                                               subHealthList: List.generate(
                                                 state.twhList.length,
-                                                (index) => SubHealthModel.fromTemperatureWeightHeight(
+                                                (index) => SubHealthModel
+                                                    .fromTemperatureWeightHeight(
                                                   state.twhList[index],
                                                 ),
                                               ),
@@ -238,9 +274,12 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                             sliver: SliverToBoxAdapter(
                               child: BlocBuilder<HealthBloc, HealthState>(
                                 buildWhen: (previous, current) =>
-                                    previous.arterialPressureList != current.arterialPressureList ||
-                                    previous.isUpdatedArterialPressure != current.isUpdatedArterialPressure,
-                                builder: (_, state) => state.arterialPressureList.isNotEmpty
+                                    previous.arterialPressureList !=
+                                        current.arterialPressureList ||
+                                    previous.isUpdatedArterialPressure !=
+                                        current.isUpdatedArterialPressure,
+                                builder: (_, state) => state
+                                        .arterialPressureList.isNotEmpty
                                     ? ArterialPressureWidget(
                                         onTap: () async {
                                           await Navigator.pushNamed(
@@ -248,18 +287,24 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                             Routes.subHealth,
                                             arguments: SubHealthArgs(
                                               bloc: _bloc,
-                                              type: SubHealthType.arterialPressure,
+                                              type: SubHealthType
+                                                  .arterialPressure,
                                               subHealthList: List.generate(
-                                                state.arterialPressureList.length,
-                                                (index) => SubHealthModel.fromArterialPressure(
-                                                    state.arterialPressureList[index]),
+                                                state.arterialPressureList
+                                                    .length,
+                                                (index) => SubHealthModel
+                                                    .fromArterialPressure(state
+                                                            .arterialPressureList[
+                                                        index]),
                                               ),
                                             ),
                                           );
-                                          debugPrint('dldl: ${state.isUpdatedArterialPressure}');
+                                          debugPrint(
+                                              'dldl: ${state.isUpdatedArterialPressure}');
                                           if (state.isUpdatedArterialPressure) {
                                             _bloc.add(
-                                              const HealthEvent.updatedrterialPressureIsUpdated(
+                                              const HealthEvent
+                                                  .updatedrterialPressureIsUpdated(
                                                 isUpdate: false,
                                               ),
                                             );
@@ -267,8 +312,12 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                         },
                                         pressure:
                                             '${state.arterialPressureList.first.sistolicheskoe ?? 0}/${state.arterialPressureList.first.diastolicheskoe ?? 0}',
-                                        pulse: state.arterialPressureList.first.pulse ?? 0,
-                                        date: state.arterialPressureList.first.date ?? '',
+                                        pulse: state.arterialPressureList.first
+                                                .pulse ??
+                                            0,
+                                        date: state.arterialPressureList.first
+                                                .date ??
+                                            '',
                                       )
                                     : ArterialPressureWidget(
                                         onTap: () async {
@@ -277,18 +326,24 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                             Routes.subHealth,
                                             arguments: SubHealthArgs(
                                               bloc: _bloc,
-                                              type: SubHealthType.arterialPressure,
+                                              type: SubHealthType
+                                                  .arterialPressure,
                                               subHealthList: List.generate(
-                                                state.arterialPressureList.length,
-                                                (index) => SubHealthModel.fromArterialPressure(
-                                                    state.arterialPressureList[index]),
+                                                state.arterialPressureList
+                                                    .length,
+                                                (index) => SubHealthModel
+                                                    .fromArterialPressure(state
+                                                            .arterialPressureList[
+                                                        index]),
                                               ),
                                             ),
                                           );
-                                          debugPrint('dldl: ${state.isUpdatedArterialPressure}');
+                                          debugPrint(
+                                              'dldl: ${state.isUpdatedArterialPressure}');
                                           if (state.isUpdatedArterialPressure) {
-                                            _bloc.add(
-                                                const HealthEvent.updatedrterialPressureIsUpdated(isUpdate: false));
+                                            _bloc.add(const HealthEvent
+                                                .updatedrterialPressureIsUpdated(
+                                                isUpdate: false));
                                           }
                                         },
                                       ),
@@ -300,8 +355,11 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                             padding: AppUtils.kPaddingHorizontal16,
                             sliver: SliverToBoxAdapter(
                               child: BlocBuilder<HealthBloc, HealthState>(
-                                buildWhen: (previous, current) => previous.bloodSugarList != current.bloodSugarList,
-                                builder: (_, state) => state.bloodSugarList.isNotEmpty
+                                buildWhen: (previous, current) =>
+                                    previous.bloodSugarList !=
+                                    current.bloodSugarList,
+                                builder: (_, state) => state
+                                        .bloodSugarList.isNotEmpty
                                     ? BloodSugarWidget(
                                         onTap: () async {
                                           await Navigator.pushNamed(
@@ -312,13 +370,18 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                               type: SubHealthType.bloodSugar,
                                               subHealthList: List.generate(
                                                 state.bloodSugarList.length,
-                                                (index) => SubHealthModel.fromBloodSugar(state.bloodSugarList[index]),
+                                                (index) => SubHealthModel
+                                                    .fromBloodSugar(state
+                                                        .bloodSugarList[index]),
                                               ),
                                             ),
                                           );
                                         },
-                                        bloodSugar: state.bloodSugarList.first.value ?? 0,
-                                        date: state.bloodSugarList.first.date ?? '',
+                                        bloodSugar:
+                                            state.bloodSugarList.first.value ??
+                                                0,
+                                        date: state.bloodSugarList.first.date ??
+                                            '',
                                       )
                                     : BloodSugarWidget(
                                         onTap: () async {
@@ -330,7 +393,9 @@ class _HealthPageState extends State<HealthPage> with HealthMixin, WidgetsBindin
                                               type: SubHealthType.bloodSugar,
                                               subHealthList: List.generate(
                                                 state.bloodSugarList.length,
-                                                (index) => SubHealthModel.fromBloodSugar(state.bloodSugarList[index]),
+                                                (index) => SubHealthModel
+                                                    .fromBloodSugar(state
+                                                        .bloodSugarList[index]),
                                               ),
                                             ),
                                           );

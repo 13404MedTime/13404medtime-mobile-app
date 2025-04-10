@@ -245,7 +245,6 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
             ),
           ),
         );
-// ... existing code ...
       }
     } on Exception catch (e) {
       debugPrint(e.toString());

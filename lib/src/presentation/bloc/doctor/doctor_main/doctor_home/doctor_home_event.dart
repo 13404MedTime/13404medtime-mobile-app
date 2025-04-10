@@ -14,6 +14,12 @@ final class GetPatients$DoctorHomeEvent extends DoctorHomeEvent {
   const GetPatients$DoctorHomeEvent();
 }
 
+final class GetNextPatients$DoctorHomeEvent extends DoctorHomeEvent {
+  const GetNextPatients$DoctorHomeEvent(this.inc);
+
+  final bool inc;
+}
+
 final class DeleteDoctorFreeTime$DoctorHomeEvent extends DoctorHomeEvent {
   const DeleteDoctorFreeTime$DoctorHomeEvent({required this.timeId});
 

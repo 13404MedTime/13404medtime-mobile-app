@@ -340,5 +340,6 @@
   "illness_name": "Название болезни",
   "you_cant_remove_free_time": "Вы не можете удалить свободное время",
   "default_code": "Код по умолчанию: 1212",
-  "health_info": "Информация от Apple Health"
+  "health_info": "Информация от Apple Health",
+  "session_is_ended": "Сессия завершена"
 }
