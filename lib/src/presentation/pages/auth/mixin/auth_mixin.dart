@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/auth/auth_page.dart';
+part of '../auth_page.dart';
 
 mixin AuthMixin on State<AuthPage> {
   late final TextEditingController phoneController;

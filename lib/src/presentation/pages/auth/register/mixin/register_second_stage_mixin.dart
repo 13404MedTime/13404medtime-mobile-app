@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/auth/register/sub_pages/register_second_stage.dart';
+part of '../sub_pages/register_second_stage.dart';
 
 mixin RegisterSecondStageMixin on State<RegisterSecondStagePage> {
   String dateTime = '';

@@ -21,7 +21,7 @@ import 'widgets/custom_dialog.dart';
 import 'widgets/profile_doctor_item.dart';
 import 'widgets/settings_item.dart';
 
-part 'package:madadio_client_mobile/src/presentation/pages/main/profile/mixin/profile_mixin.dart';
+part 'mixin/profile_mixin.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

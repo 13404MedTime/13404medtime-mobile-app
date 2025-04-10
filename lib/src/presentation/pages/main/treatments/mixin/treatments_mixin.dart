@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/treatments/treatments_page.dart';
+part of '../treatments_page.dart';
 
 mixin TreatmentsMixin on State<TreatmentsPage> {
   late final _bloc = context.read<TreatmentsBloc>();

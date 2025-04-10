@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/consultation/specialists/specialists_page.dart';
+part of '../specialists_page.dart';
 
 mixin SpecialistsMixin on State<SpecialistsPage> {
   late final TextEditingController _searchController = TextEditingController();

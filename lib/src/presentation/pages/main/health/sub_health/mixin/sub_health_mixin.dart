@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/health/sub_health/sub_health_page.dart';
+part of '../sub_health_page.dart';
 
 mixin SubHealthMixin on State<SubHealthPage> {
   late final TabController _tabController;

@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/profile/disease_history/disease_history_page.dart';
+part of '../disease_history_page.dart';
 
 mixin DiseaseHistoryMixin on State<DiseaseHistoryPage> {
   late final DiseaseHistoryBloc _bloc = context.read<DiseaseHistoryBloc>();

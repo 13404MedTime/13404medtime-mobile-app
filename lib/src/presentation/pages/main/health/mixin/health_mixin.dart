@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/health/health_page.dart';
+part of '../health_page.dart';
 
 mixin HealthMixin on State<HealthPage> {
   late final HealthBloc _bloc = context.read<HealthBloc>();

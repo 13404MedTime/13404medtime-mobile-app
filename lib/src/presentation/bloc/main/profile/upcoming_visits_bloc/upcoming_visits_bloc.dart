@@ -53,18 +53,22 @@ class UpcomingVisitsBloc
     );
     final map = <String, List<BookingResponse>>{};
     for (final i in result.right.data.data.response) {
-      final date = DateTime.parse(i.doctorBookingIdData.date);
-      final key = DateFormat('dd MMMM yyyy')
-          .format(date.subtract(const Duration(days: 1)));
-      if (i.status.first.toLowerCase() != 'approved' &&
-          DateTime.parse(i.doctorBookingIdData.date).isAfter(DateTime.now())) {
-        if (map.containsKey(key)) {
-          final list = [...map[key]!, i]..sort((a, b) => a
-              .doctorBookingIdData.fromTime
-              .compareTo(b.doctorBookingIdData.fromTime));
-          map[key] = list;
-        } else {
-          map[key] = [i];
+      if (i.doctorBookingIdData.fromTime != '' &&
+          i.doctorBookingIdData.date != '') {
+        final date = DateTime.parse(i.doctorBookingIdData.date);
+        final key = DateFormat('dd MMMM yyyy')
+            .format(date.subtract(const Duration(days: 1)));
+        if (i.status.first.toLowerCase() != 'approved' &&
+            DateTime.parse(i.doctorBookingIdData.date)
+                .isAfter(DateTime.now())) {
+          if (map.containsKey(key)) {
+            final list = [...map[key]!, i]..sort((a, b) => a
+                .doctorBookingIdData.fromTime
+                .compareTo(b.doctorBookingIdData.fromTime));
+            map[key] = list;
+          } else {
+            map[key] = [i];
+          }
         }
       }
     }

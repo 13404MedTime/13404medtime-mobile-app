@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/home/medical_history/medical_history_page.dart';
+part of '../medical_history_page.dart';
 
 mixin MedicalHistoryMixin on State<MedicalHistoryPage> {
   late final TextEditingController _searchController = TextEditingController();

@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/profile/profile_page.dart';
+part of '../profile_page.dart';
 
 mixin ProfileMixin on State<ProfilePage> {
   late TextEditingController telegramNicNameController;

@@ -8,7 +8,7 @@ import '../../../../bloc/auth/register/register_bloc.dart';
 import '../../../../components/buttons/bottom_navigation_button.dart';
 import '../../../../components/custom_texfield/custom_text_field.dart';
 
-part 'package:madadio_client_mobile/src/presentation/pages/auth/register/mixin/register_first_stage_mixin.dart';
+part '../mixin/register_first_stage_mixin.dart';
 
 class RegisterFirstStagePage extends StatefulWidget {
   const RegisterFirstStagePage({

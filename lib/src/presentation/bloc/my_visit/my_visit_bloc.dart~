@@ -249,7 +249,7 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
     } on Exception catch (e) {
       debugPrint(e.toString());
     }
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(isLoading: false, selected: null));
   }
 
   Future<void> _getDoctorBookingRequests(

@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/home/my_appointments/my_appointments_page.dart';
+part of '../my_appointments_page.dart';
 
 mixin MyAppointmentsMixin on State<MyAppointmentsPage> {
   late final MyAppointmentsBloc _bloc = context.read<MyAppointmentsBloc>();

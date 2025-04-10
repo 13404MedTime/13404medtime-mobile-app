@@ -98,8 +98,10 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
             'doctor_id': [event.guid],
             'limit': 10000,
             'date': {
-              '\$gte': '${event.date.year}-${event.date.month.toString().padLeft(2, '0')}-${event.date.day.toString().padLeft(2, '0')}T19:00:00.183Z',
-              '\$lt': '${event.date.year}-${event.date.month.toString().padLeft(2, '0')}-${(event.date.day + 1).toString().padLeft(2, '0')}T18:59:59.183Z',
+              '\$gte':
+                  '${event.date.year}-${event.date.month.toString().padLeft(2, '0')}-${event.date.day.toString().padLeft(2, '0')}T19:00:00.183Z',
+              '\$lt':
+                  '${event.date.year}-${event.date.month.toString().padLeft(2, '0')}-${(event.date.day + 1).toString().padLeft(2, '0')}T18:59:59.183Z',
             },
             'offset': null,
             'order': {},
@@ -110,10 +112,7 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
       );
       if (result.isRight) {
         emit(state.copyWith(bookings: result.right.data.data.response));
-        _getSelectedDate(
-            GetSelectedDateEvent(
-                selectedDate: event.date),
-            emit);
+        _getSelectedDate(GetSelectedDateEvent(selectedDate: event.date), emit);
       } else {
         emit(state.copyWith(isLoading: false));
       }
@@ -130,9 +129,7 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
     emit(
       state.copyWith(
         selectedBookings: state.bookings
-            .where((e) =>
-                e.date.day ==
-                event.selectedDate.day + 1)
+            .where((e) => e.date.day == event.selectedDate.day + 1)
             .toList(),
       ),
     );
@@ -162,6 +159,8 @@ class MyVisitBloc extends Bloc<MyVisitEvent, MyVisitState> {
           }
         },
       );
+      await _getDoctorBookingRequests(
+          const GetDoctorBookingRequestsEvent(), emit);
       await _getDoctorFreeTime(
           GetDoctorFreeTimeEvent(guid: event.doctorGuid, date: DateTime.now()),
           emit);

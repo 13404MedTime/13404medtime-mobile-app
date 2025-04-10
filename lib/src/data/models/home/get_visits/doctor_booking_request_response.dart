@@ -72,7 +72,7 @@ class BookingResponse {
             json['cleints_id_data'] as Map<String, Object?>? ?? {}),
         doctorBookingId: json['doctor_booking_id'] as String? ?? '',
         doctorBookingIdData: DoctorBookingData.fromJson(
-            json['doctor_booking_id_data'] as Map<String, Object?>? ?? {}),
+            (json['doctor_booking_id_data'] as Map<String, Object?>?) ?? {}),
         doctorId: json['doctor_id'] as String? ?? '',
         doctorIdData: DoctorData.fromJson(
             json['doctor_id_data'] as Map<String, Object?>? ?? {}),

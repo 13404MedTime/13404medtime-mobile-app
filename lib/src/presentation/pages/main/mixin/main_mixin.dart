@@ -1,6 +1,17 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/main_page.dart';
+part of '../main_page.dart';
 
 mixin MainMixin on State<MainPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HealthBloc>()
+      ..add(const GetStepsCountOfTodayEvent())
+      ..add(const GetArterialPressureEvent())
+      ..add(const GetBloodSugarEvent())
+      ..add(const GetTWHEvent())
+      ..add(const GetPedometerEvent());
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

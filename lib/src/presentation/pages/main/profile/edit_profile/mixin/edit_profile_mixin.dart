@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/profile/edit_profile/edit_profile_page.dart';
+part of '../edit_profile_page.dart';
 
 mixin EditProfileMixin on State<EditProfilePage> {
   late final TextEditingController _firstNameController = TextEditingController();

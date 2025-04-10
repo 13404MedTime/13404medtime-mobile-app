@@ -11,7 +11,7 @@ import '../../../../components/loading_widgets/modal_progress_hud.dart';
 import 'widgets/bottom_sheets/blood_group_sheet.dart';
 import 'widgets/bottom_sheets/choose_height_weight.dart';
 
-part 'package:madadio_client_mobile/src/presentation/pages/auth/register/mixin/register_second_stage_mixin.dart';
+part '../mixin/register_second_stage_mixin.dart';
 
 class RegisterSecondStagePage extends StatefulWidget {
   const RegisterSecondStagePage({

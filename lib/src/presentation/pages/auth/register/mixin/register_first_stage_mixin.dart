@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/auth/register/sub_pages/register_first_stage.dart';
+part of '../sub_pages/register_first_stage.dart';
 
 mixin RegisterFirstStageMixin on State<RegisterFirstStagePage> {
   late final TextEditingController _firstNameController = TextEditingController();

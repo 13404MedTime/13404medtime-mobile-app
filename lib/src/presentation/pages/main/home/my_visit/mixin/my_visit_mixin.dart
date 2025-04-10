@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/home/my_visit/my_visit_page.dart';
+part of '../my_visit_page.dart';
 
 mixin MyVisitMixin on State<MyVisitPage> {
   late final MyVisitBloc _bloc;

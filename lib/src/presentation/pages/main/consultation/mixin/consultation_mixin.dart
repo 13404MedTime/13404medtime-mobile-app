@@ -1,4 +1,4 @@
-part of 'package:madadio_client_mobile/src/presentation/pages/main/consultation/consultation_page.dart';
+part of '../consultation_page.dart';
 
 mixin ConsultationMixin on State<ConsultationPage> {
   late final TextEditingController _searchController = TextEditingController();
